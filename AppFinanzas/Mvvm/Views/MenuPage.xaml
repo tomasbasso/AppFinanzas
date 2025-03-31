@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppFinanzas.Mvvm.Views.MenuPage"
+             BackgroundColor="#FAFAF8">
+
+    <Frame CornerRadius="16"
+           Padding="0"
+           Margin="20"
+           BackgroundColor="White"
+           HasShadow="True">
+
+        <VerticalStackLayout>
+            <!-- Encabezado -->
+            <BoxView HeightRequest="60" BackgroundColor="#1F2E46"/>
+            <Label Text="Gestión de Finanzas"
+                   TextColor="White"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   VerticalTextAlignment="Center"
+                   HorizontalOptions="Center"
+                   Margin="0,-50,0,20"/>
+
+            <!-- Opciones de menú -->
+            <VerticalStackLayout Padding="20" Spacing="25">
+                <!-- Cada sección -->
+                <Grid ColumnDefinitions="40,*,Auto" RowSpacing="16">
+                    <!-- Cuentas -->
+                    <Image Source="cuenta_bancaria.png" WidthRequest="24" HeightRequest="24"/>
+                    <Label Text="Cuentas bancarias" Grid.Column="1" FontSize="18"/>
+                </Grid>
+
+                <Grid ColumnDefinitions="40,*,Auto">
+                    <Image Source="dinero.png" WidthRequest="24" HeightRequest="24"/>
+                    <Label Text="Transacciones" Grid.Column="1" FontSize="18"/>
+                </Grid>
+
+                <Grid ColumnDefinitions="40,*,Auto">
+                    <Image Source="presupuesto.png" WidthRequest="24" HeightRequest="24"/>
+                    <Label Text="Presupuestos" Grid.Column="1" FontSize="18"/>
+                </Grid>
+
+                <Grid ColumnDefinitions="40,*,Auto">
+                    <Image Source="meta_ahorro.png" WidthRequest="24" HeightRequest="24"/>
+                    <Label Text="Metas de ahorro" Grid.Column="1" FontSize="18"/>
+                </Grid>
+
+                <Grid ColumnDefinitions="40,*,Auto">
+                    <Image Source="tipo_cambio.png" WidthRequest="24" HeightRequest="24"/>
+                    <Label Text="Tipo de cambio" Grid.Column="1" FontSize="18"/>
+                </Grid>
+
+                <Grid ColumnDefinitions="40,*,Auto">
+                    <Image Source="perfil.png" WidthRequest="24" HeightRequest="24"/>
+                    <Label Text="Perfil" Grid.Column="1" FontSize="18"/>
+                </Grid>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </Frame>
+</ContentPage>
