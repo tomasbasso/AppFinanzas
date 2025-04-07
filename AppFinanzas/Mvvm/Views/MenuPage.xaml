@@ -25,15 +25,23 @@
             <VerticalStackLayout Padding="20" Spacing="25">
                 <!-- Cada sección -->
                 <Grid ColumnDefinitions="40,*,Auto" RowSpacing="16">
-                    <!-- Cuentas -->
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding IrACuentasCommand}" />
+                    </Grid.GestureRecognizers>
+
                     <Image Source="cuenta_bancaria.png" WidthRequest="24" HeightRequest="24"/>
                     <Label Text="Cuentas bancarias" Grid.Column="1" FontSize="18"/>
                 </Grid>
 
                 <Grid ColumnDefinitions="40,*,Auto">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding IrATransaccionesCommand}" />
+                    </Grid.GestureRecognizers>
+
                     <Image Source="dinero.png" WidthRequest="24" HeightRequest="24"/>
                     <Label Text="Transacciones" Grid.Column="1" FontSize="18"/>
                 </Grid>
+
 
                 <Grid ColumnDefinitions="40,*,Auto">
                     <Image Source="presupuesto.png" WidthRequest="24" HeightRequest="24"/>

@@ -9,13 +9,13 @@
     Shell.FlyoutBehavior="Disabled"
     Title="AppFinanzas">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate views:LoginPage}"
-        Route="LoginPage" />
-    <ShellContent
-    Route="MenuPage"
-    ContentTemplate="{DataTemplate views:MenuPage}" />
+
+
+    <ShellContent Route="LoginPage" Title="Home" ContentTemplate="{DataTemplate views:LoginPage}"   />
+    <ShellContent Route="MenuPage" ContentTemplate="{DataTemplate views:MenuPage}" />
+    <ShellContent Route="CuentasPage" ContentTemplate="{DataTemplate views:CuentasPage}" />
+    <ShellContent Route="TransaccionesPage" ContentTemplate="{DataTemplate views:TransaccionesPage}" />
+
 
 </Shell>
 

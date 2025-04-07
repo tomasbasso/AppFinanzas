@@ -63,14 +63,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Mvvm\Models\" />
-	</ItemGroup>
-
-	<ItemGroup>
+	  <MauiXaml Update="Mvvm\Views\CuentasPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Mvvm\Views\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Mvvm\Views\MenuPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Mvvm\Views\TransaccionesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

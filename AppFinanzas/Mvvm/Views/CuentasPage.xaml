@@ -1,0 +1,24 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:AppFinanzas.Mvvm.ViewModels"
+             x:Class="AppFinanzas.Mvvm.Views.CuentasPage"
+             Title="Cuentas Bancarias">
+
+    <ContentPage.BindingContext>
+        <viewModels:CuentasViewModel />
+    </ContentPage.BindingContext>
+
+    <CollectionView ItemsSource="{Binding Cuentas}">
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Frame Margin="10" Padding="10" BackgroundColor="#f4f4f4" CornerRadius="10">
+                    <VerticalStackLayout>
+                        <Label Text="{Binding Nombre}" FontAttributes="Bold" FontSize="18" />
+                        <Label Text="{Binding Banco}" />
+                        <Label Text="{Binding Saldo, StringFormat='Saldo: {0:C}'}" />
+                    </VerticalStackLayout>
+                </Frame>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentPage>

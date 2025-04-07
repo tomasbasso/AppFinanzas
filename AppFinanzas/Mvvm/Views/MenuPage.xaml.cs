@@ -1,9 +1,13 @@
-namespace AppFinanzas.Mvvm.Views;
+using AppFinanzas.Mvvm.ViewModels;
 
-public partial class MenuPage : ContentPage
+namespace AppFinanzas.Mvvm.Views
 {
-	public MenuPage()
-	{
-		InitializeComponent();
-	}
+    public partial class MenuPage : ContentPage
+    {
+        public MenuPage()
+        {
+            InitializeComponent();
+            BindingContext = new MenuViewModel();
+        }
+    }
 }
