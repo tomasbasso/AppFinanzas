@@ -24,6 +24,7 @@
             <!-- Opciones de menú -->
             <VerticalStackLayout Padding="20" Spacing="25">
                 <!-- Cada sección -->
+                <!-- Cuentas -->
                 <Grid ColumnDefinitions="40,*,Auto" RowSpacing="16">
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding IrACuentasCommand}" />
@@ -33,6 +34,7 @@
                     <Label Text="Cuentas bancarias" Grid.Column="1" FontSize="18"/>
                 </Grid>
 
+                <!-- Transacciones -->
                 <Grid ColumnDefinitions="40,*,Auto">
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding IrATransaccionesCommand}" />
@@ -42,23 +44,42 @@
                     <Label Text="Transacciones" Grid.Column="1" FontSize="18"/>
                 </Grid>
 
-
+                <!-- Presupuestos -->
                 <Grid ColumnDefinitions="40,*,Auto">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding IrAPresupuestosCommand}" />
+                    </Grid.GestureRecognizers>
+
                     <Image Source="presupuesto.png" WidthRequest="24" HeightRequest="24"/>
                     <Label Text="Presupuestos" Grid.Column="1" FontSize="18"/>
                 </Grid>
 
+                <!-- Metas de ahorro -->
                 <Grid ColumnDefinitions="40,*,Auto">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding IrAMetasCommand}" />
+                    </Grid.GestureRecognizers>
+
                     <Image Source="meta_ahorro.png" WidthRequest="24" HeightRequest="24"/>
                     <Label Text="Metas de ahorro" Grid.Column="1" FontSize="18"/>
                 </Grid>
 
+                <!-- Tipo de cambio -->
                 <Grid ColumnDefinitions="40,*,Auto">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding IrATipoCambioCommand}" />
+                    </Grid.GestureRecognizers>
+
                     <Image Source="tipo_cambio.png" WidthRequest="24" HeightRequest="24"/>
                     <Label Text="Tipo de cambio" Grid.Column="1" FontSize="18"/>
                 </Grid>
 
+                <!-- Perfil -->
                 <Grid ColumnDefinitions="40,*,Auto">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding IrAPerfilCommand}" />
+                    </Grid.GestureRecognizers>
+
                     <Image Source="perfil.png" WidthRequest="24" HeightRequest="24"/>
                     <Label Text="Perfil" Grid.Column="1" FontSize="18"/>
                 </Grid>

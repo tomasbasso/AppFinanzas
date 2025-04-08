@@ -17,7 +17,7 @@ namespace AppFinanzas.Mvvm.ViewModels
             IrACuentasCommand = new Command(async () => await Shell.Current.GoToAsync("CuentasPage")); 
             IrATransaccionesCommand = new Command(async () => await Shell.Current.GoToAsync("TransaccionesPage"));
             IrAPresupuestosCommand = new Command(async () => await Shell.Current.GoToAsync("PresupuestosPage"));
-            IrAMetasCommand = new Command(async () => await Shell.Current.GoToAsync("MetasPage"));
+            IrAMetasCommand = new Command(async () => await Shell.Current.GoToAsync("MetasAhorroPage"));
             IrATipoCambioCommand = new Command(async () => await Shell.Current.GoToAsync("TipoCambioPage"));
             IrAPerfilCommand = new Command(async () => await Shell.Current.GoToAsync("PerfilPage"));
         }

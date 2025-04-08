@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppFinanzas.Mvvm.Views.MetasAhorroPage"
+             Title="Metas de Ahorro">
+
+    <StackLayout Padding="20">
+        <Label Text="Metas de ahorro" 
+               FontSize="24" 
+               FontAttributes="Bold" 
+               HorizontalOptions="Center"
+               Margin="0,10" />
+
+        <CollectionView ItemsSource="{Binding Metas}" Margin="0,10">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame BorderColor="Gray" CornerRadius="8" Padding="10" Margin="0,5">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding Nombre}" FontSize="18" FontAttributes="Bold" />
+                            <Label Text="{Binding MontoObjetivo, StringFormat='Objetivo: {0:C}'}" />
+                            <Label Text="{Binding ProgresoActual, StringFormat='Progreso: {0:C}'}" />
+                            <Label Text="{Binding FechaLimite, StringFormat='Hasta: {0:dd/MM/yyyy}'}" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>

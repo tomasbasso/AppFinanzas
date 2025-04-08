@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppFinanzas.Mvvm.Views.TipoCambioPage"
+             Title="Tipo de Cambio"
+             BackgroundColor="#FAFAF8">
+
+    <StackLayout Padding="20">
+        <Label Text="Tipos de cambio" FontSize="24" FontAttributes="Bold" Margin="0,0,0,10"/>
+
+        <CollectionView ItemsSource="{Binding TiposCambio}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame BorderColor="#ccc" CornerRadius="12" Padding="10" Margin="0,5">
+                        <StackLayout>
+                            <Label Text="{Binding MonedaOrigen}" FontAttributes="Bold"/>
+                            <Label Text="→" FontSize="18"/>
+                            <Label Text="{Binding MonedaDestino}" />
+                            <Label Text="{Binding Tasa, StringFormat='Tasa: {0:F2}'}" TextColor="Green"/>
+                            <Label Text="{Binding Fecha, StringFormat='Fecha: {0:dd/MM/yyyy}'}" FontSize="12" TextColor="Gray"/>
+                        </StackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>

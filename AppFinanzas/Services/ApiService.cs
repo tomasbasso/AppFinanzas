@@ -65,7 +65,7 @@ namespace AppFinanzas.Services
                 throw new Exception("No se pudo eliminar la cuenta");
         }
         
-        ////////////TRANSACCIONES
+        ////////////TRANSACCIONES 
         public async Task<List<TransaccionDto>> GetTransaccionesAsync()
         {
             var response = await _client.GetAsync($"{_baseUrl}/Transacciones");
@@ -75,6 +75,56 @@ namespace AppFinanzas.Services
 
             var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<List<TransaccionDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+       
+        ////////////PRESUPUESTOS
+        public async Task<List<PresupuestoDto>> GetPresupuestosAsync()
+        {
+            var response = await _client.GetAsync($"{_baseUrl}/Presupuestos");
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Error al obtener presupuestos");
+
+        var json = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<List<PresupuestoDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+
+        ////////////METAS AHORRO
+        
+        public async Task<List<MetaAhorroDto>> GetMetasAhorroAsync()
+        {
+            var response = await _client.GetAsync($"{_baseUrl}/MetasAhorro");
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Error al obtener metas de ahorro");
+
+        var json = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<List<MetaAhorroDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+
+        ////////// TIPO DE CAMBIO 
+
+        public async Task<List<TipoCambioDto>> GetTiposCambioAsync()
+        {
+            var response = await _client.GetAsync($"{_baseUrl}/TipoCambio");
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Error al obtener tipos de cambio");
+
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<List<TipoCambioDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+
+        /////// PERFIL
+        public async Task<UsuarioDto> GetPerfilAsync()
+        {
+            var response = await _client.GetAsync($"{_baseUrl}/Usuarios/me");
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Error al obtener el perfil del usuario");
+
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<UsuarioDto>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
     }
 }

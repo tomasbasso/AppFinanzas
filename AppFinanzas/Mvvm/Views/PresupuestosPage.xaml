@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AppFinanzas.Mvvm.ViewModels"
+             x:Class="AppFinanzas.Mvvm.Views.PresupuestosPage"
+             Title="Presupuestos">
+
+    <ContentPage.BindingContext>
+        <vm:PresupuestosViewModel />
+    </ContentPage.BindingContext>
+
+    <CollectionView ItemsSource="{Binding Presupuestos}">
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Frame Margin="10" Padding="10" BackgroundColor="#f2f2f2" CornerRadius="12">
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="{Binding NombreCategoria}" FontAttributes="Bold" FontSize="16"/>
+                        <Label Text="{Binding MontoLimite, StringFormat='Límite: {0:C}'}" />
+                        <Label Text="{Binding FechaInicio, StringFormat='Desde: {0:dd/MM/yyyy}'}" />
+                        <Label Text="{Binding FechaFin, StringFormat='Hasta: {0:dd/MM/yyyy}'}" />
+                    </VerticalStackLayout>
+                </Frame>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentPage>
