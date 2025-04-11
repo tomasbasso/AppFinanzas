@@ -9,18 +9,26 @@
         <vm:TransaccionesViewModel />
     </ContentPage.BindingContext>
 
-    <CollectionView ItemsSource="{Binding Transacciones}">
-        <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <Frame Margin="10" Padding="10" BackgroundColor="#F0F0F0" CornerRadius="10">
-                    <VerticalStackLayout Spacing="5">
-                        <Label Text="{Binding Tipo}" FontAttributes="Bold" FontSize="16" />
-                        <Label Text="{Binding Monto, StringFormat='Monto: {0:C}'}" FontSize="14" />
-                        <Label Text="{Binding Descripcion}" FontSize="14" />
-                        <Label Text="{Binding Fecha, StringFormat='Fecha: {0:dd/MM/yyyy}'}" FontSize="12" TextColor="Gray" />
-                    </VerticalStackLayout>
-                </Frame>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+    <StackLayout>
+        <Button Text="Agregar Transacción"
+                Command="{Binding IrANuevaCommand}"
+                BackgroundColor="#1F2E46"
+                TextColor="White"
+                Margin="20,10" />
+
+        <CollectionView ItemsSource="{Binding Transacciones}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="10" Padding="10" BackgroundColor="#F0F0F0" CornerRadius="10">
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="{Binding Tipo}" FontAttributes="Bold" FontSize="16" />
+                            <Label Text="{Binding Monto, StringFormat='Monto: {0:C}'}" FontSize="14" />
+                            <Label Text="{Binding Descripcion}" FontSize="14" />
+                            <Label Text="{Binding Fecha, StringFormat='Fecha: {0:dd/MM/yyyy}'}" FontSize="12" TextColor="Gray" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
 </ContentPage>

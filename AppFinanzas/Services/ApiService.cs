@@ -31,8 +31,14 @@ namespace AppFinanzas.Services
             if (!response.IsSuccessStatusCode)
                 throw new Exception("Login fallido");
 
-            return new UsuarioDto { Email = email };
+            var result = await response.Content.ReadAsStringAsync();
+
+            return JsonSerializer.Deserialize<UsuarioDto>(result, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            })!;
         }
+
 
         //////////// CUENTAS BANCARIAS
         public async Task<List<CuentaDto>> GetCuentasAsync()
@@ -76,7 +82,29 @@ namespace AppFinanzas.Services
             var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<List<TransaccionDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
-       
+
+
+        public async Task CrearTransaccionAsync(TransaccionDto transaccion)
+        {
+            var json = JsonSerializer.Serialize(transaccion);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync($"{_baseUrl}/Transacciones", content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error {(int)response.StatusCode}: {error}");
+            }
+
+            // Opcional: podés leer la transacción creada si la necesitas
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var transaccionCreada = JsonSerializer.Deserialize<TransaccionDto>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            Console.WriteLine($"Transacción creada: {transaccionCreada?.Descripcion}");
+        }
+
+
         ////////////PRESUPUESTOS
         public async Task<List<PresupuestoDto>> GetPresupuestosAsync()
         {

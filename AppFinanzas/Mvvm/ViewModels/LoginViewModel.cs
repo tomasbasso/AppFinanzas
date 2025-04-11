@@ -1,5 +1,6 @@
 ﻿using AppFinanzas.Services;
 using System;
+using AppFinanzas.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,9 @@ namespace AppFinanzas.Mvvm.ViewModels
             try
             {
                 var usuario = await _apiService.LoginAsync(Email, Contrasena);
+
+                SesionActual.Usuario = usuario; // <- FIX
+
                 await Application.Current.MainPage.DisplayAlert("Éxito", $"Bienvenido {usuario.Email}", "OK");
                 await Shell.Current.GoToAsync("//MenuPage");
             }

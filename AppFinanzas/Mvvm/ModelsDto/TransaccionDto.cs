@@ -16,5 +16,7 @@ namespace AppFinanzas.Mvvm.ModelsDto
         public int CuentaId { get; set; }
         public int? CategoriaGastoId { get; set; }
         public int? CategoriaIngresoId { get; set; }
+        public int UsuarioId { get; set; } 
     }
+
 }

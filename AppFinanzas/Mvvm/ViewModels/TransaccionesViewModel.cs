@@ -11,11 +11,16 @@ namespace AppFinanzas.Mvvm.ViewModels
 
         public ObservableCollection<TransaccionDto> Transacciones { get; } = new();
         public ICommand CargarTransaccionesCommand { get; }
+        public ICommand IrANuevaCommand { get; }
 
         public TransaccionesViewModel()
         {
             CargarTransaccionesCommand = new Command(async () => await CargarTransacciones());
             CargarTransaccionesCommand.Execute(null);
+
+            IrANuevaCommand = new Command(async () => await Shell.Current.GoToAsync("///NuevaTransaccionPage")); ;
+            _ = CargarTransacciones(); // para cargar al iniciar
+
         }
 
         private async Task CargarTransacciones()

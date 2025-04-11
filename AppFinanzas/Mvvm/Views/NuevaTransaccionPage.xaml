@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppFinanzas.Mvvm.Views.NuevaTransaccionPage"
+             Title="Nueva Transacción"
+             BackgroundColor="#FAFAF8">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Picker Title="Tipo" ItemsSource="{Binding Tipos}" SelectedItem="{Binding Tipo}" />
+            <Entry Placeholder="Monto" Keyboard="Numeric" Text="{Binding Monto}" />
+            <Entry Placeholder="Descripción" Text="{Binding Descripcion}" />
+            <DatePicker Date="{Binding Fecha}" />
+
+            <!-- Podés agregar Picker para Cuenta, Categoría, etc. si tenés listas -->
+
+            <Button Text="Guardar" Command="{Binding GuardarCommand}" BackgroundColor="#1F2E46" TextColor="White"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
