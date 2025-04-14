@@ -82,8 +82,16 @@ namespace AppFinanzas.Services
             var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<List<TransaccionDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
+        public async Task EditarTransaccionAsync(TransaccionDto transaccion)
+        {
+            var json = JsonSerializer.Serialize(transaccion);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
+            var response = await _client.PutAsync($"{_baseUrl}/Transacciones/{transaccion.TransaccionId}", content);
 
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("No se pudo editar la transacción");
+        }
         public async Task CrearTransaccionAsync(TransaccionDto transaccion)
         {
             var json = JsonSerializer.Serialize(transaccion);
@@ -102,6 +110,13 @@ namespace AppFinanzas.Services
             var transaccionCreada = JsonSerializer.Deserialize<TransaccionDto>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             Console.WriteLine($"Transacción creada: {transaccionCreada?.Descripcion}");
+        }
+        public async Task EliminarTransaccionAsync(int transaccionId)
+        {
+            var response = await _client.DeleteAsync($"{_baseUrl}/Transacciones/{transaccionId}");
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("No se pudo eliminar la transacción");
         }
 
 

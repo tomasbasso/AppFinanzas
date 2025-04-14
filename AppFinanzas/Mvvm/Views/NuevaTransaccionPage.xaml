@@ -13,9 +13,10 @@
             <Entry Placeholder="Descripción" Text="{Binding Descripcion}" />
             <DatePicker Date="{Binding Fecha}" />
 
-            <!-- Podés agregar Picker para Cuenta, Categoría, etc. si tenés listas -->
+            <Picker Title="Cuenta" ItemsSource="{Binding Cuentas}" ItemDisplayBinding="{Binding Nombre}" SelectedItem="{Binding CuentaSeleccionada}" />
 
             <Button Text="Guardar" Command="{Binding GuardarCommand}" BackgroundColor="#1F2E46" TextColor="White"/>
+            <Button Text="Volver"  Command="{Binding VolverCommand}"  BackgroundColor="LightGray" TextColor="Black" CornerRadius="10" HeightRequest="50" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
