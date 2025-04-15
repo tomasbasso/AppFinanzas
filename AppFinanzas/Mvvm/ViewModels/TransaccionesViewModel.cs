@@ -57,7 +57,7 @@ namespace AppFinanzas.Mvvm.ViewModels
         }
         private async Task EditarTransaccion(TransaccionDto transaccion)
         {
-            await Shell.Current.GoToAsync("NuevaTransaccionPage", true, new Dictionary<string, object>
+            await Shell.Current.GoToAsync(nameof(NuevaTransaccionPage), new Dictionary<string, object>
             {
                 ["Transaccion"] = transaccion
             });

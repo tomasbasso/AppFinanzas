@@ -15,6 +15,7 @@ namespace AppFinanzas
             Routing.RegisterRoute(nameof(MetasAhorroPage), typeof(MetasAhorroPage));
             Routing.RegisterRoute(nameof(TipoCambioPage), typeof(TipoCambioPage));
             Routing.RegisterRoute(nameof(PerfilPage), typeof(PerfilPage));
+            Routing.RegisterRoute(nameof(NuevaTransaccionPage), typeof(NuevaTransaccionPage));
 
 
         }
