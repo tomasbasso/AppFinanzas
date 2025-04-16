@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:AppFinanzas.Mvvm.ViewModels"
+             x:Class="AppFinanzas.Mvvm.Views.NuevaCuentaPage"
+             Title="Cuenta Bancaria"
+             BackgroundColor="#FAFAF8">
+
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Entry Placeholder="Nombre" Text="{Binding Nombre}" />
+            <Entry Placeholder="Banco" Text="{Binding Banco}" />
+            <Picker Title="Tipo de Cuenta" ItemsSource="{Binding TiposCuenta}" SelectedItem="{Binding TipoCuenta}" />
+            <Entry Placeholder="Saldo inicial" Keyboard="Numeric" Text="{Binding Saldo}" />
+            <Button Text="Guardar" Command="{Binding GuardarCommand}" BackgroundColor="#1F2E46" TextColor="White"/>
+            <Button Text="Volver" Command="{Binding VolverCommand}" BackgroundColor="LightGray" TextColor="Black"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

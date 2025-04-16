@@ -51,26 +51,47 @@ namespace AppFinanzas.Services
             var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<List<CuentaDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
-        ////////////CREAR CUENTA BANCARIA
+
         public async Task CrearCuentaAsync(CuentaDto nuevaCuenta)
         {
             var json = JsonSerializer.Serialize(nuevaCuenta);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var response = await _client.PostAsync($"{_baseUrl}/Cuentas", content);
-
             if (!response.IsSuccessStatusCode)
-                throw new Exception("No se pudo crear la cuenta");
+                throw new Exception("No se pudo crear la cuenta.");
         }
-        ////////////ELIMINAR CUENTA BANCARIA
-        public async Task EliminarCuentaAsync(int id)
+
+        public async Task EditarCuentaAsync(CuentaDto cuenta)
         {
-            var response = await _client.DeleteAsync($"{_baseUrl}/Cuentas/{id}");
+            var dto = new
+            {
+                cuenta.Nombre,
+                cuenta.Banco,
+                SaldoInicial = cuenta.Saldo,
+                cuenta.TipoCuenta,
+                cuenta.UsuarioId
+            };
+
+            var json = JsonSerializer.Serialize(dto);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PutAsync($"{_baseUrl}/Cuentas/{cuenta.CuentaId}", content);
 
             if (!response.IsSuccessStatusCode)
-                throw new Exception("No se pudo eliminar la cuenta");
+            {
+                var errorBody = await response.Content.ReadAsStringAsync(); // <-- Acá vemos qué falló
+                throw new Exception($"Error al editar cuenta: {response.StatusCode} - {errorBody}");
+            }
         }
-        
+
+        public async Task EliminarCuentaAsync(int cuentaId)
+        {
+            var response = await _client.DeleteAsync($"{_baseUrl}/Cuentas/{cuentaId}");
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("No se pudo eliminar la cuenta.");
+        }
+
         ////////////TRANSACCIONES 
         public async Task<List<TransaccionDto>> GetTransaccionesAsync()
         {

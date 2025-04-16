@@ -15,6 +15,7 @@
     <ShellContent Route="MenuPage" ContentTemplate="{DataTemplate views:MenuPage}" />
     <ShellContent Route="CuentasPage" ContentTemplate="{DataTemplate views:CuentasPage}" />
     <ShellContent Route="NuevaTransaccionPage" ContentTemplate="{DataTemplate views:NuevaTransaccionPage}" />
+    <ShellContent Route="NuevaCuentaPage" ContentTemplate="{DataTemplate views:NuevaCuentaPage}" />
 
 
 

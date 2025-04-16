@@ -1,56 +1,78 @@
 ﻿using AppFinanzas.Mvvm.ModelsDto;
+using AppFinanzas.Mvvm.Views;
 using AppFinanzas.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace AppFinanzas.Mvvm.ViewModels
 {
     public class CuentasViewModel : BaseViewModel
     {
-        private readonly ApiService _apiService;
-        public ObservableCollection<CuentaDto> Cuentas { get; set; }
-        private bool isBusy;
-        public bool IsBusy
-        {
-            get => isBusy;
-            set => SetProperty(ref isBusy, value);
-        }
+        private readonly ApiService _apiService = new();
+
+        public ObservableCollection<CuentaDto> Cuentas { get; } = new();
+
+        public ICommand CargarCommand { get; }
+        public ICommand IrANuevaCommand { get; }
+        public ICommand EditarCommand { get; }
+        public ICommand EliminarCommand { get; }
 
         public CuentasViewModel()
         {
-            _apiService = new ApiService(); // o inyectalo si usás DI
-            Cuentas = new ObservableCollection<CuentaDto>();
-            LoadCuentasCommand = new Command(async () => await LoadCuentasAsync());
+            CargarCommand = new Command(async () => await CargarCuentasAsync());
+            IrANuevaCommand = new Command(async () =>
+            {
+                await Application.Current.MainPage.Navigation.PushAsync(new NuevaCuentaPage());
+            });
+            EditarCommand = new Command<CuentaDto>(async (cuenta) => await EditarCuenta(cuenta));
+            EliminarCommand = new Command<CuentaDto>(async (cuenta) => await EliminarCuenta(cuenta));
 
-            LoadCuentasCommand.Execute(null);
+            CargarCommand.Execute(null);
         }
 
-        public Command LoadCuentasCommand { get; }
-
-        private async Task LoadCuentasAsync()
+        private async Task CargarCuentasAsync()
         {
-            IsBusy = true;
-
             try
             {
-                var cuentas = await _apiService.GetCuentasAsync();
+                var lista = await _apiService.GetCuentasAsync();
                 Cuentas.Clear();
-
-                foreach (var cuenta in cuentas)
+                foreach (var cuenta in lista)
                     Cuentas.Add(cuenta);
             }
             catch (Exception ex)
             {
                 await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
             }
-            finally
+        }
+
+        private async Task EditarCuenta(CuentaDto cuenta)
+        {
+            await Shell.Current.GoToAsync(nameof(NuevaCuentaPage), new Dictionary<string, object>
             {
-                IsBusy = false;
+                ["Cuenta"] = cuenta
+            });
+        }
+
+        private async Task EliminarCuenta(CuentaDto cuenta)
+        {
+            bool confirm = await Shell.Current.DisplayAlert("Confirmar", "¿Eliminar cuenta?", "Sí", "No");
+
+            if (!confirm) return;
+
+            try
+            {
+                await _apiService.EliminarCuentaAsync(cuenta.CuentaId);
+                Cuentas.Remove(cuenta);
             }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+        }
+
+        public async Task RecargarCuentas()
+        {
+            await CargarCuentasAsync();
         }
     }
 }
