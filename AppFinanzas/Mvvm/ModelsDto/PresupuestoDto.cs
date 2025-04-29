@@ -9,12 +9,14 @@ namespace AppFinanzas.Mvvm.ModelsDto
     public class PresupuestoDto
     {
         public int PresupuestoId { get; set; }
-        public decimal MontoLimite { get; set; }
-        public DateTime FechaInicio { get; set; }
-        public DateTime FechaFin { get; set; }
+        public int UsuarioId { get; set; }
         public int CategoriaGastoId { get; set; }
+        public decimal MontoLimite { get; set; }
+        public int Mes { get; set; }
+        public int Año { get; set; }
 
         // Opcional para mostrar
         public string NombreCategoria { get; set; }
+     
     }
 }

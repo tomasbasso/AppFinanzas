@@ -153,8 +153,50 @@ namespace AppFinanzas.Services
             return JsonSerializer.Deserialize<List<PresupuestoDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
+        public async Task CrearPresupuestoAsync(PresupuestoDto presupuesto)
+        {
+            var json = JsonSerializer.Serialize(presupuesto);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync($"{_baseUrl}/Presupuestos", content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error {(int)response.StatusCode}: {error}");
+            }
+            // Opcional: podés leer la transacción creada si la necesitas
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var presupuestoCreado = JsonSerializer.Deserialize<PresupuestoDto>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            Console.WriteLine($"Transacción creada: {presupuestoCreado?.MontoLimite}");
+        }
+
+        public async Task EditarPresupuestoAsync(PresupuestoDto presupuesto)
+        {
+            var json = JsonSerializer.Serialize(presupuesto);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PutAsync($"{_baseUrl}/Presupuestos/{presupuesto.PresupuestoId}", content);
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("No se pudo editar el presupuesto");
+        }
+
+        public async Task<List<CategoriaGastoDto>> GetCategoriasGastoAsync()
+        {
+            var response = await _client.GetAsync($"{_baseUrl}/CategoriasGasto");
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Error al obtener las categorías de gasto.");
+
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<List<CategoriaGastoDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+
+
         ////////////METAS AHORRO
-        
+
         public async Task<List<MetaAhorroDto>> GetMetasAhorroAsync()
         {
             var response = await _client.GetAsync($"{_baseUrl}/MetasAhorro");

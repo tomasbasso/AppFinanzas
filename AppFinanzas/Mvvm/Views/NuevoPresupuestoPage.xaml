@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:AppFinanzas.Mvvm.ViewModels"
+             x:Class="AppFinanzas.Mvvm.Views.NuevoPresupuestoPage"
+             Title="Nuevo Presupuesto"
+             BackgroundColor="#FAFAF8">
+
+    <!--<ContentPage.BindingContext>
+        <viewModels:NuevoPresupuestoViewModel />
+    </ContentPage.BindingContext>-->
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Categoría de Gasto" FontAttributes="Bold"/>
+            <Picker ItemsSource="{Binding Categorias}"
+                    ItemDisplayBinding="{Binding Nombre}"
+                    SelectedItem="{Binding CategoriaSeleccionada}" />
+
+            <Entry Placeholder="Monto límite"
+                   Keyboard="Numeric"
+                   Text="{Binding MontoLimite}" />
+
+            <Label Text="Mes" FontAttributes="Bold"/>
+            <Picker Title="Seleccione el Mes"
+                    ItemsSource="{Binding Meses}"
+                    SelectedItem="{Binding MesSeleccionado}" />
+
+            <Label Text="Año" FontAttributes="Bold"/>
+            <Entry Placeholder="Ingrese el Año"
+                   Keyboard="Numeric"
+                   Text="{Binding Anio}" />
+
+            <Button Text="Guardar"
+                    Command="{Binding GuardarCommand}"
+                    BackgroundColor="#1F2E46"
+                    TextColor="White"
+                    HeightRequest="45" />
+
+            <Button Text="Volver"
+                    Command="{Binding VolverCommand}"
+                    BackgroundColor="LightGray"
+                    TextColor="Black"
+                    HeightRequest="45" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

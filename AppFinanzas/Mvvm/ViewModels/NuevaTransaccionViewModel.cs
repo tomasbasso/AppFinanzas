@@ -13,6 +13,7 @@ namespace AppFinanzas.Mvvm.ViewModels
 
         public List<string> Tipos { get; } = new() { "Ingreso", "Gasto" };
         public ICommand VolverCommand { get; }
+
         private TransaccionDto? _transaccionExistente;
         public List<CuentaDto> Cuentas { get; set; } = new();
         public CuentaDto CuentaSeleccionada { get; set; }
