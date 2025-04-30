@@ -35,7 +35,7 @@ namespace AppFinanzas.Mvvm.ViewModels
 
             try
             {
-                await _apiService.EliminarCuentaAsync(presupuesto.PresupuestoId);
+                await _apiService.EliminarPresupuestoAsync(presupuesto.PresupuestoId);
                 Presupuestos.Remove(presupuesto);
             }
             catch (Exception ex)
@@ -50,6 +50,8 @@ namespace AppFinanzas.Mvvm.ViewModels
                 ["Presupuesto"] = presupuesto
             });
         }
+
+
         private async Task CargarPresupuestos()
         {
             try

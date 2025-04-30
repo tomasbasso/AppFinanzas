@@ -152,7 +152,12 @@ namespace AppFinanzas.Services
         var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<List<PresupuestoDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
-
+        public async Task EliminarPresupuestoAsync(int presupuestoId)
+        {
+            var response = await _client.DeleteAsync($"{_baseUrl}/Presupuestos/{presupuestoId}");
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("No se pudo eliminar el presupuesto.");
+        }
         public async Task CrearPresupuestoAsync(PresupuestoDto presupuesto)
         {
             var json = JsonSerializer.Serialize(presupuesto);

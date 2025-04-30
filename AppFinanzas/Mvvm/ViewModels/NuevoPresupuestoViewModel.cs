@@ -5,8 +5,10 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Input;
 
+
 namespace AppFinanzas.Mvvm.ViewModels
 {
+    [QueryProperty(nameof(Presupuesto), "Presupuesto")]
     public class NuevoPresupuestoViewModel : BaseViewModel
     {
         private readonly ApiService _apiService = new();
@@ -18,10 +20,13 @@ namespace AppFinanzas.Mvvm.ViewModels
             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
         };
 
+        // Propiedades públicas
         public CategoriaGastoDto CategoriaSeleccionada { get; set; }
         public string MontoLimite { get; set; }
         public string MesSeleccionado { get; set; }
         public string Anio { get; set; }
+
+        public PresupuestoDto Presupuesto { get; set; }
 
         public ICommand GuardarCommand { get; }
         public ICommand VolverCommand { get; }
@@ -29,10 +34,14 @@ namespace AppFinanzas.Mvvm.ViewModels
         public NuevoPresupuestoViewModel()
         {
             GuardarCommand = new Command(async () => await GuardarAsync());
-            VolverCommand = new Command(async () => await Shell.Current.GoToAsync(".."));
+            VolverCommand = new Command(async () =>
+            {
+                await Shell.Current.GoToAsync("//MenuPage/PresupuestosPage");
+            });
 
             _ = CargarCategoriasAsync();
         }
+        
 
         private async Task CargarCategoriasAsync()
         {
@@ -41,7 +50,23 @@ namespace AppFinanzas.Mvvm.ViewModels
             foreach (var cat in lista)
                 Categorias.Add(cat);
 
-            CategoriaSeleccionada = Categorias.FirstOrDefault();
+            // Si se está editando y ya vino el presupuesto, cargar datos
+            if (Presupuesto != null)
+                CargarDesdePresupuesto();
+        }
+
+        private void CargarDesdePresupuesto()
+        {
+            if (Presupuesto == null) return;
+
+            MontoLimite = Presupuesto.MontoLimite.ToString(CultureInfo.InvariantCulture);
+            Anio = Presupuesto.Año.ToString();
+            MesSeleccionado = Meses[Presupuesto.Mes - 1]; // Convertir 1 a "Enero"
+            CategoriaSeleccionada = Categorias.FirstOrDefault(c => c.CategoriaGastoId == Presupuesto.CategoriaGastoId);
+
+            OnPropertyChanged(nameof(MontoLimite));
+            OnPropertyChanged(nameof(Anio));
+            OnPropertyChanged(nameof(MesSeleccionado));
             OnPropertyChanged(nameof(CategoriaSeleccionada));
         }
 
@@ -73,19 +98,24 @@ namespace AppFinanzas.Mvvm.ViewModels
 
             var dto = new PresupuestoDto
             {
+                PresupuestoId = Presupuesto?.PresupuestoId ?? 0,
                 CategoriaGastoId = CategoriaSeleccionada.CategoriaGastoId,
                 NombreCategoria = CategoriaSeleccionada.Nombre,
                 MontoLimite = montoDecimal,
-                Mes = Meses.IndexOf(MesSeleccionado) + 1, // Enero = 1, etc.
+                Mes = Meses.IndexOf(MesSeleccionado) + 1,
                 Año = anioNum,
                 UsuarioId = SesionActual.Usuario!.UsuarioId
             };
 
             try
             {
-                await _apiService.CrearPresupuestoAsync(dto);
+                if (Presupuesto == null || Presupuesto.PresupuestoId == 0)
+                    await _apiService.CrearPresupuestoAsync(dto);
+                else
+                    await _apiService.EditarPresupuestoAsync(dto);
+
                 await Shell.Current.DisplayAlert("Éxito", "Presupuesto guardado.", "OK");
-                await Shell.Current.GoToAsync("//PresupuestosPage");
+                await Shell.Current.GoToAsync("//MenuPage/PresupuestosPage");
             }
             catch (Exception ex)
             {
