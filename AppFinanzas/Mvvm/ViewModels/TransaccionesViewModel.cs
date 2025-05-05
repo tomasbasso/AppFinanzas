@@ -82,3 +82,5 @@ namespace AppFinanzas.Mvvm.ViewModels
         }
     }
 }
+
+

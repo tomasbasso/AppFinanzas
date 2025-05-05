@@ -27,9 +27,9 @@ namespace AppFinanzas.Mvvm.ViewModels
         public string Anio { get; set; }
 
         public PresupuestoDto Presupuesto { get; set; }
-
-        public ICommand GuardarCommand { get; }
         public ICommand VolverCommand { get; }
+        public ICommand GuardarCommand { get; }
+    
 
         public NuevoPresupuestoViewModel()
         {

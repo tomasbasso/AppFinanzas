@@ -13,11 +13,12 @@ namespace AppFinanzas.Mvvm.ViewModels
 
         public string Nombre { get; set; }
         public string Banco { get; set; }
+        public ICommand VolverCommand { get; }
         public string TipoCuenta { get; set; } = string.Empty;
         public string Saldo { get; set; }
 
         public ICommand GuardarCommand { get; }
-        public ICommand VolverCommand { get; }
+     
 
         public NuevaCuentaViewModel(CuentaDto? cuenta = null)
         {

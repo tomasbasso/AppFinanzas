@@ -14,6 +14,7 @@ namespace AppFinanzas.Mvvm.ViewModels
 
         public string Email { get; set; }
         public string Contrasena { get; set; }
+
         public Command LoginCommand { get; }
 
         public LoginViewModel()

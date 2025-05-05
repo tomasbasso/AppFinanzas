@@ -10,6 +10,9 @@
                FontSize="24"
                FontAttributes="Bold"
                HorizontalOptions="Center" />
+        <Button Text="Volver"  Command="{Binding VolverCommand}"
+             BackgroundColor="LightGray" TextColor="Black"
+             CornerRadius="10" HeightRequest="50" />
 
         <Frame CornerRadius="10" BackgroundColor="White" Padding="15" HasShadow="True">
             <VerticalStackLayout Spacing="10">

@@ -212,6 +212,41 @@ namespace AppFinanzas.Services
         var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<List<MetaAhorroDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
+        public async Task EliminarMetaAhorroAsync(int MetaId)
+        {
+            var response = await _client.DeleteAsync($"{_baseUrl}/MetasAhorro/{MetaId}");
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("No se pudo eliminar la meta ahorro.");
+        }
+        public async Task EditarMetaAhorroAsync(MetaAhorroDto meta_ahorro)
+        {
+            var json = JsonSerializer.Serialize(meta_ahorro);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PutAsync($"{_baseUrl}/MetasAhorro/{meta_ahorro.MetaId}", content);
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("No se pudo editar esta meta de ahorro");
+        }
+        public async Task CrearMetaAhorroAsync(MetaAhorroDto meta_ahorro)
+        {
+            var json = JsonSerializer.Serialize(meta_ahorro);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync($"{_baseUrl}/MetasAhorro", content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error {(int)response.StatusCode}: {error}");
+            }
+            // Opcional: podés leer la transacción creada si la necesitas
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var MetaCreada = JsonSerializer.Deserialize<MetaAhorroDto>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            Console.WriteLine($"Meta creada:{MetaCreada}");
+        }
+        
 
         ////////// TIPO DE CAMBIO 
 

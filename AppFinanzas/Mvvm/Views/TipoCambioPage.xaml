@@ -7,7 +7,9 @@
 
     <StackLayout Padding="20">
         <Label Text="Tipos de cambio" FontSize="24" FontAttributes="Bold" Margin="0,0,0,10"/>
-
+        <Button Text="Volver"  Command="{Binding VolverCommand}"
+             BackgroundColor="LightGray" TextColor="Black"
+             CornerRadius="10" HeightRequest="50" />
         <CollectionView ItemsSource="{Binding TiposCambio}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>

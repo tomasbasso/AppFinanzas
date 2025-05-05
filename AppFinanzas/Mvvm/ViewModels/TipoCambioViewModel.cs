@@ -11,12 +11,17 @@ namespace AppFinanzas.Mvvm.ViewModels
         private readonly ApiService _apiService = new();
 
         public ObservableCollection<TipoCambioDto> TiposCambio { get; } = new();
+        public ICommand VolverCommand { get; }
         public ICommand CargarTiposCambioCommand { get; }
 
         public TipoCambioViewModel()
         {
             CargarTiposCambioCommand = new Command(async () => await CargarTiposCambioAsync());
             CargarTiposCambioCommand.Execute(null);
+            VolverCommand = new Command(async () =>
+            {
+                await Application.Current.MainPage.Navigation.PopAsync();
+            });
         }
 
         private async Task CargarTiposCambioAsync()

@@ -9,6 +9,7 @@ namespace AppFinanzas.Mvvm.ViewModels
         private readonly ApiService _apiService = new();
 
         private UsuarioDto _usuario;
+        public ICommand VolverCommand { get; }
         public UsuarioDto Usuario
         {
             get => _usuario;
@@ -21,6 +22,10 @@ namespace AppFinanzas.Mvvm.ViewModels
         {
             CargarPerfilCommand = new Command(async () => await CargarPerfilAsync());
             CargarPerfilCommand.Execute(null);
+            VolverCommand = new Command(async () =>
+            {
+                await Application.Current.MainPage.Navigation.PopAsync();
+            });
         }
 
         private async Task CargarPerfilAsync()

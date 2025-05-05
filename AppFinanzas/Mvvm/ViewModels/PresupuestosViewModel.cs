@@ -14,6 +14,7 @@ namespace AppFinanzas.Mvvm.ViewModels
         public ICommand CargarPresupuestosCommand { get; }
         public ICommand IrANuevaCommand { get; }
         public ICommand EditarCommand { get; }
+        public ICommand VolverCommand { get; }
         public ICommand EliminarCommand { get; }
 
         public PresupuestosViewModel()
@@ -26,6 +27,10 @@ namespace AppFinanzas.Mvvm.ViewModels
             });
             EditarCommand = new Command<PresupuestoDto>(async (presupuesto) => await EditarPresupuesto(presupuesto));
             EliminarCommand = new Command<PresupuestoDto>(async (presupuesto) => await EliminarPresupuesto(presupuesto));
+            VolverCommand = new Command(async () =>
+            {
+                await Application.Current.MainPage.Navigation.PopAsync();
+            });
         }
         private async Task EliminarPresupuesto(PresupuestoDto presupuesto)
         {

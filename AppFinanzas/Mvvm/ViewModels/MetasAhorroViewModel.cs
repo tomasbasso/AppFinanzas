@@ -3,30 +3,74 @@ using AppFinanzas.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Text.Json;
+using AppFinanzas.Mvvm.Views;
 
 namespace AppFinanzas.Mvvm.ViewModels
 {
-    public class MetasAhorroViewModel : BaseViewModel
+    public class MetasAhorroViewModel : BaseViewModel, IQueryAttributable
     {
         private readonly ApiService _apiService = new();
 
-        public ObservableCollection<MetaAhorroDto> Metas { get; } = new();
+        public ObservableCollection<MetaAhorroDto> MetasAhorro { get; } = new();
         public ICommand CargarMetasCommand { get; }
+        public ICommand IrANuevaCommand { get; }
+        public ICommand EditarCommand { get; }
+        public ICommand VolverCommand { get; }
+        public ICommand EliminarCommand { get; }
 
         public MetasAhorroViewModel()
         {
             CargarMetasCommand = new Command(async () => await CargarMetas());
             CargarMetasCommand.Execute(null);
+            VolverCommand = new Command(async () =>
+            {
+                await Application.Current.MainPage.Navigation.PopAsync();
+            });
+            IrANuevaCommand = new Command(async () =>
+            {
+                await Application.Current.MainPage.Navigation.PushAsync(new NuevaMetaAhorroPage());
+            });
+            EditarCommand = new Command<MetaAhorroDto>(async (meta_ahorro) => await EditarMetaAhorro(meta_ahorro));
+            EliminarCommand = new Command<MetaAhorroDto>(async (meta_ahorro) => await EliminarMetaAhorro(meta_ahorro));
         }
+        private async Task EliminarMetaAhorro(MetaAhorroDto meta_ahorro)
+        {
+            bool confirm = await Shell.Current.DisplayAlert("Confirmar", "¿Seguro que desea eliminar esta meta ahorro?", "Sí", "No");
 
+            if (!confirm) return;
+
+            try
+            {
+                await _apiService.EliminarMetaAhorroAsync(meta_ahorro.MetaId);
+                MetasAhorro.Remove(meta_ahorro);
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error al borrar", ex.Message, "OK");
+            }
+        }
+          private async Task EditarMetaAhorro(MetaAhorroDto meta_ahorro)
+        {
+            await Shell.Current.GoToAsync(nameof(NuevaMetaAhorroPage), new Dictionary<string, object>
+            {
+                ["MetaAhorro"] = meta_ahorro
+            });
+        }
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.ContainsKey("Refrescar"))
+            {
+                _ = CargarMetas();
+            }
+        }
         private async Task CargarMetas()
         {
             try
             {
                 var lista = await _apiService.GetMetasAhorroAsync();
-                Metas.Clear();
+                MetasAhorro.Clear();
                 foreach (var meta in lista)
-                    Metas.Add(meta);
+                    MetasAhorro.Add(meta);
             }
             catch (Exception ex)
             {

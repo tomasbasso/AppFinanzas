@@ -9,6 +9,9 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
+            <Button Text="Volver"  Command="{Binding VolverCommand}"
+            BackgroundColor="LightGray" TextColor="Black"
+            CornerRadius="10" HeightRequest="50" />
 
             <Entry Placeholder="Nombre" Text="{Binding Nombre}" />
             <Entry Placeholder="Banco" Text="{Binding Banco}" />

@@ -14,6 +14,7 @@ namespace AppFinanzas.Mvvm.ViewModels
 
         public ICommand CargarCommand { get; }
         public ICommand IrANuevaCommand { get; }
+        public ICommand VolverCommand { get; }
         public ICommand EditarCommand { get; }
         public ICommand EliminarCommand { get; }
 
@@ -28,6 +29,10 @@ namespace AppFinanzas.Mvvm.ViewModels
             EliminarCommand = new Command<CuentaDto>(async (cuenta) => await EliminarCuenta(cuenta));
 
             CargarCommand.Execute(null);
+            VolverCommand = new Command(async () =>
+            {
+                await Application.Current.MainPage.Navigation.PopAsync();
+            });
         }
 
         private async Task CargarCuentasAsync()

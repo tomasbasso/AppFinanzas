@@ -78,6 +78,9 @@
 	  <MauiXaml Update="Mvvm\Views\NuevaCuentaPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Mvvm\Views\NuevaMetaAhorroPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Mvvm\Views\NuevaTransaccionPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

@@ -14,6 +14,12 @@
         <VerticalStackLayout Padding="20" Spacing="15">
 
             <Label Text="Categoría de Gasto" FontAttributes="Bold"/>
+
+            <Button Text="Volver"  Command="{Binding VolverCommand}"
+            BackgroundColor="LightGray" TextColor="Black"
+            CornerRadius="10" HeightRequest="50" />
+
+            
             <Picker ItemsSource="{Binding Categorias}"
                     ItemDisplayBinding="{Binding Nombre}"
                     SelectedItem="{Binding CategoriaSeleccionada}" />

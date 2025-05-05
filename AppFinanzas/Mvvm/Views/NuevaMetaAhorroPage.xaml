@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AppFinanzas.Mvvm.ViewModels"
+             x:Class="AppFinanzas.Mvvm.Views.NuevaMetaAhorroPage"
+             Title="Nueva Meta de Ahorro">
+
+    <ContentPage.BindingContext>
+        <vm:NuevaMetaAhorroViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <Label Text="Nombre de la meta" FontAttributes="Bold"/>
+            <Entry Placeholder="Ej: Viaje a Brasil"
+                   Text="{Binding Nombre}" />
+
+            <Label Text="Monto objetivo" FontAttributes="Bold"/>
+            <Entry Placeholder="Ej: 500000"
+                   Keyboard="Numeric"
+                   Text="{Binding MontoObjetivo}" />
+
+            <Label Text="Fecha límite" FontAttributes="Bold"/>
+            <DatePicker Date="{Binding FechaLimite}" />
+
+            <Label Text="Progreso actual" FontAttributes="Bold"/>
+            <Entry Placeholder="Ej: 100000"
+                   Keyboard="Numeric"
+                   Text="{Binding ProgresoActual}" />
+
+            <Button Text="Guardar"
+                    Command="{Binding GuardarCommand}"
+                    BackgroundColor="#1F2E46"
+                    TextColor="White"/>
+
+            <Button Text="Volver"
+                    Command="{Binding VolverCommand}"
+                    BackgroundColor="LightGray"
+                    TextColor="Black"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

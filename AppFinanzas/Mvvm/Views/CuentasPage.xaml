@@ -30,6 +30,10 @@
                 HeightRequest="45"
                 Command="{Binding IrANuevaCommand}"
                 Margin="0,0,0,15"/>
+            <Button Text="Volver"  Command="{Binding VolverCommand}"
+            BackgroundColor="LightGray" TextColor="Black"
+            CornerRadius="10" HeightRequest="50" />
+
 
             <!-- Lista -->
             <CollectionView ItemsSource="{Binding Cuentas}">

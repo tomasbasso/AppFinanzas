@@ -28,7 +28,11 @@
     Command="{Binding IrANuevaCommand}"
     Margin="0,0,0,15"/>
     
-    <CollectionView ItemsSource="{Binding Presupuestos}">
+            <Button Text="Volver"  Command="{Binding VolverCommand}"
+        BackgroundColor="LightGray" TextColor="Black"
+        CornerRadius="10" HeightRequest="50" />
+            
+            <CollectionView ItemsSource="{Binding Presupuestos}">
         <CollectionView.ItemTemplate>
             <DataTemplate>
                 <Frame Margin="10" Padding="10" BackgroundColor="#f2f2f2" CornerRadius="12">

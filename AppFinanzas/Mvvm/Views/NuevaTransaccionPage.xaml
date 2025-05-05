@@ -9,6 +9,10 @@
         <VerticalStackLayout Padding="20" Spacing="15">
 
             <Picker Title="Tipo" ItemsSource="{Binding Tipos}" SelectedItem="{Binding Tipo}" />
+            <Button Text="Volver"  Command="{Binding VolverCommand}"
+            BackgroundColor="LightGray" TextColor="Black"
+            CornerRadius="10" HeightRequest="50" />
+
             <Entry Placeholder="Monto" Keyboard="Numeric" Text="{Binding Monto}" />
             <Entry Placeholder="Descripción" Text="{Binding Descripcion}" />
             <DatePicker Date="{Binding Fecha}" />
