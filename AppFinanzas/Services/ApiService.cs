@@ -246,19 +246,22 @@ namespace AppFinanzas.Services
 
             Console.WriteLine($"Meta creada:{MetaCreada}");
         }
-        
+
 
         ////////// TIPO DE CAMBIO 
 
-        public async Task<List<TipoCambioDto>> GetTiposCambioAsync()
+        public async Task<List<TipoCambioDto>> GetTiposCambioExternosAsync()
         {
-            var response = await _client.GetAsync($"{_baseUrl}/TipoCambio");
+            var response = await _client.GetAsync("https://dolarapi.com/v1/dolares");
 
             if (!response.IsSuccessStatusCode)
-                throw new Exception("Error al obtener tipos de cambio");
+                throw new Exception("No se pudo obtener el tipo de cambio externo");
 
             var json = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<TipoCambioDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            return JsonSerializer.Deserialize<List<TipoCambioDto>>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
         }
 
         /////// PERFIL

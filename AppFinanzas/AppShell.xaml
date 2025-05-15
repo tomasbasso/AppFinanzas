@@ -11,7 +11,7 @@
 
 
 
-    <ShellContent Route="LoginPage" Title="Home" ContentTemplate="{DataTemplate views:LoginPage}"   />
+    <ShellContent Route="LoginPage" Title="Home" Shell.NavBarIsVisible="False" ContentTemplate="{DataTemplate views:LoginPage}"   />
     <ShellContent Route="MenuPage" ContentTemplate="{DataTemplate views:MenuPage}" />
     <ShellContent Route="CuentasPage" ContentTemplate="{DataTemplate views:CuentasPage}" />
     <ShellContent Route="NuevaTransaccionPage" ContentTemplate="{DataTemplate views:NuevaTransaccionPage}" />

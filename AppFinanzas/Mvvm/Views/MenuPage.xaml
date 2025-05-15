@@ -2,88 +2,96 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AppFinanzas.Mvvm.Views.MenuPage"
-             BackgroundColor="#FAFAF8">
+             BackgroundColor="#25241f">
 
-    <Frame CornerRadius="16"
-           Padding="0"
-           Margin="20"
-           BackgroundColor="White"
-           HasShadow="True">
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="30"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center">
 
-        <VerticalStackLayout>
-            <!-- Encabezado -->
-            <BoxView HeightRequest="60" BackgroundColor="#1F2E46"/>
-            <Label Text="Gestión de Finanzas"
-                   TextColor="White"
-                   FontSize="24"
-                   FontAttributes="Bold"
-                   VerticalTextAlignment="Center"
-                   HorizontalOptions="Center"
-                   Margin="0,-50,0,20"/>
+            <!-- Logo -->
+            <Image Source="logosinfondo.png"
+                   HeightRequest="300"
+                   WidthRequest="300"
+                   HorizontalOptions="Center" />
+
+            <!-- Línea decorativa -->
+            <BoxView HeightRequest="3"
+                     WidthRequest="200"
+                     Color="#caa755"
+                     HorizontalOptions="Center"
+                     Margin="0,10" />
 
             <!-- Opciones de menú -->
-            <VerticalStackLayout Padding="20" Spacing="25">
-                <!-- Cada sección -->
-                <!-- Cuentas -->
-                <Grid ColumnDefinitions="40,*,Auto" RowSpacing="16">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding IrACuentasCommand}" />
-                    </Grid.GestureRecognizers>
+            <VerticalStackLayout Spacing="20"
+                                 HorizontalOptions="Center"
+                                 WidthRequest="280">
 
-                    <Image Source="cuenta_bancaria.png" WidthRequest="24" HeightRequest="24"/>
-                    <Label Text="Cuentas bancarias" Grid.Column="1" FontSize="18"/>
-                </Grid>
+                <!-- Una opción de menú -->
+                <Frame BackgroundColor="#caa755" CornerRadius="8" BorderColor="#caa755"
+                       HasShadow="False"
+                       Padding="10">
 
-                <!-- Transacciones -->
-                <Grid ColumnDefinitions="40,*,Auto">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding IrATransaccionesCommand}" />
-                    </Grid.GestureRecognizers>
+                    <Grid ColumnDefinitions="30,*,Auto">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding IrACuentasCommand}" />
+                        </Grid.GestureRecognizers>
+                        <Image Source="cuenta_bancaria.png" WidthRequest="24" HeightRequest="24"/>
+                        <Label Text="Cuentas bancarias" Grid.Column="1" FontSize="18" HorizontalOptions="Center" TextColor="Black"/>
+                    </Grid>
+                </Frame>
 
-                    <Image Source="dinero.png" WidthRequest="24" HeightRequest="24"/>
-                    <Label Text="Transacciones" Grid.Column="1" FontSize="18"/>
-                </Grid>
+                <!-- Repite para cada opción -->
+                <Frame BackgroundColor="#caa755" CornerRadius="8" BorderColor="#caa755" HasShadow="False" Padding="10">
+                    <Grid ColumnDefinitions="30,*,Auto">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding IrATransaccionesCommand}" />
+                        </Grid.GestureRecognizers>
+                        <Image Source="dinero.png" WidthRequest="24" HeightRequest="24"/>
+                        <Label Text="Transacciones" Grid.Column="1" FontSize="18" HorizontalOptions="Center" TextColor="black"/>
+                    </Grid>
+                </Frame>
 
-                <!-- Presupuestos -->
-                <Grid ColumnDefinitions="40,*,Auto">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding IrAPresupuestosCommand}" />
-                    </Grid.GestureRecognizers>
+                <Frame BackgroundColor="#caa755" CornerRadius="8" BorderColor="#caa755" HasShadow="False" Padding="10">
+                    <Grid ColumnDefinitions="30,*,Auto">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding IrAPresupuestosCommand}" />
+                        </Grid.GestureRecognizers>
+                        <Image Source="presupuesto.png" WidthRequest="24" HeightRequest="24"/>
+                        <Label Text="Presupuestos" Grid.Column="1" FontSize="18" HorizontalOptions="Center" TextColor="black"/>
+                    </Grid>
+                </Frame>
 
-                    <Image Source="presupuesto.png" WidthRequest="24" HeightRequest="24"/>
-                    <Label Text="Presupuestos" Grid.Column="1" FontSize="18"/>
-                </Grid>
+                <Frame BackgroundColor="#caa755" CornerRadius="8" BorderColor="#caa755" HasShadow="False" Padding="10">
+                    <Grid ColumnDefinitions="30,*,Auto">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding IrAMetasCommand}" />
+                        </Grid.GestureRecognizers>
+                        <Image Source="meta_ahorro.png" WidthRequest="24" HeightRequest="24"/>
+                        <Label Text="Metas de ahorro" Grid.Column="1" FontSize="18" HorizontalOptions="Center" TextColor="black"/>
+                    </Grid>
+                </Frame>
 
-                <!-- Metas de ahorro -->
-                <Grid ColumnDefinitions="40,*,Auto">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding IrAMetasCommand}" />
-                    </Grid.GestureRecognizers>
+                <Frame BackgroundColor="#caa755" CornerRadius="8" BorderColor="#caa755" HasShadow="False" Padding="10">
+                    <Grid ColumnDefinitions="30,*,Auto">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding IrATipoCambioCommand}" />
+                        </Grid.GestureRecognizers>
+                        <Image Source="tipo_cambio.png" WidthRequest="24" HeightRequest="24"/>
+                        <Label Text="Tipo de cambio" Grid.Column="1" FontSize="18" HorizontalOptions="Center" TextColor="black"/>
+                    </Grid>
+                </Frame>
 
-                    <Image Source="meta_ahorro.png" WidthRequest="24" HeightRequest="24"/>
-                    <Label Text="Metas de ahorro" Grid.Column="1" FontSize="18"/>
-                </Grid>
-
-                <!-- Tipo de cambio -->
-                <Grid ColumnDefinitions="40,*,Auto">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding IrATipoCambioCommand}" />
-                    </Grid.GestureRecognizers>
-
-                    <Image Source="tipo_cambio.png" WidthRequest="24" HeightRequest="24"/>
-                    <Label Text="Tipo de cambio" Grid.Column="1" FontSize="18"/>
-                </Grid>
-
-                <!-- Perfil -->
-                <Grid ColumnDefinitions="40,*,Auto">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding IrAPerfilCommand}" />
-                    </Grid.GestureRecognizers>
-
-                    <Image Source="perfil.png" WidthRequest="24" HeightRequest="24"/>
-                    <Label Text="Perfil" Grid.Column="1" FontSize="18"/>
-                </Grid>
+                <Frame BackgroundColor="#caa755" CornerRadius="8" BorderColor="#caa755" HasShadow="False" Padding="10">
+                    <Grid ColumnDefinitions="30,*,Auto">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding IrAPerfilCommand}" />
+                        </Grid.GestureRecognizers>
+                        <Image Source="perfil.png" WidthRequest="24" HeightRequest="24"/>
+                        <Label Text="Perfil" Grid.Column="1" FontSize="18" HorizontalOptions="Center" TextColor="black"/>
+                    </Grid>
+                </Frame>
             </VerticalStackLayout>
         </VerticalStackLayout>
-    </Frame>
+    </ScrollView>
 </ContentPage>

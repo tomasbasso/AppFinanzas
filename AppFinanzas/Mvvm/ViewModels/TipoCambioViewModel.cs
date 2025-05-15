@@ -1,42 +1,34 @@
 ﻿using AppFinanzas.Mvvm.ModelsDto;
+using AppFinanzas.Mvvm.ViewModels;
 using AppFinanzas.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using System.Text.Json;
 
-namespace AppFinanzas.Mvvm.ViewModels
+public class TipoCambioViewModel : BaseViewModel
 {
-    public class TipoCambioViewModel : BaseViewModel
+    private readonly ApiService _apiService = new();
+
+    public ObservableCollection<TipoCambioDto> TiposCambio { get; } = new();
+    public ICommand CargarCommand { get; }
+
+    public TipoCambioViewModel()
     {
-        private readonly ApiService _apiService = new();
+        CargarCommand = new Command(async () => await CargarTiposCambio());
+        CargarCommand.Execute(null);
+    }
 
-        public ObservableCollection<TipoCambioDto> TiposCambio { get; } = new();
-        public ICommand VolverCommand { get; }
-        public ICommand CargarTiposCambioCommand { get; }
-
-        public TipoCambioViewModel()
+    private async Task CargarTiposCambio()
+    {
+        try
         {
-            CargarTiposCambioCommand = new Command(async () => await CargarTiposCambioAsync());
-            CargarTiposCambioCommand.Execute(null);
-            VolverCommand = new Command(async () =>
-            {
-                await Application.Current.MainPage.Navigation.PopAsync();
-            });
+            var lista = await _apiService.GetTiposCambioExternosAsync();
+            TiposCambio.Clear();
+            foreach (var tipo in lista)
+                TiposCambio.Add(tipo);
         }
-
-        private async Task CargarTiposCambioAsync()
+        catch (Exception ex)
         {
-            try
-            {
-                var lista = await _apiService.GetTiposCambioAsync();
-                TiposCambio.Clear();
-                foreach (var item in lista)
-                    TiposCambio.Add(item);
-            }
-            catch (Exception ex)
-            {
-                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
-            }
+            await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
         }
     }
 }

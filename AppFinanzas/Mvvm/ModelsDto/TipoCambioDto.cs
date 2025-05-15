@@ -8,10 +8,12 @@ namespace AppFinanzas.Mvvm.ModelsDto
 {
     public class TipoCambioDto
     {
-        public int TipoCambioId { get; set; }
-        public string MonedaOrigen { get; set; }
-        public string MonedaDestino { get; set; }
-        public decimal Tasa { get; set; }
-        public DateTime Fecha { get; set; }
+        public string Casa { get; set; }
+        public decimal Compra { get; set; }
+        public decimal Venta { get; set; }
+        public DateTime FechaActualizacion { get; set; }
+
+        public string CasaFormateada => System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Casa);
     }
+
 }
