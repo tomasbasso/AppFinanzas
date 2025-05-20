@@ -18,6 +18,7 @@
     <ShellContent Route="NuevaTransaccionPage" ContentTemplate="{DataTemplate views:NuevaTransaccionPage}" />
     <ShellContent Route="NuevaCuentaPage" ContentTemplate="{DataTemplate views:NuevaCuentaPage}" />
     <ShellContent Route="GestionUsuariosPage" ContentTemplate="{DataTemplate views:GestionUsuariosPage}" />
+    <ShellContent Route="UsuarioFormPage" ContentTemplate="{DataTemplate views:UsuarioFormPage}" />
     
 
 

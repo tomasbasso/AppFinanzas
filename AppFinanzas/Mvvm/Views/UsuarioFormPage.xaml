@@ -1,0 +1,33 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppFinanzas.Mvvm.Views.UsuarioFormPage"
+             Title="{Binding TituloPagina}"
+             BackgroundColor="#25241f">
+    <VerticalStackLayout Padding="20" Spacing="16">
+
+        <Label Text="{Binding TituloPagina}" FontSize="26" TextColor="#caa755" HorizontalOptions="Center" />
+
+        <Entry Placeholder="Nombre" Text="{Binding Usuario.Nombre}" TextColor="Beige"/>
+        <Entry Placeholder="Email" Text="{Binding Usuario.Email}" TextColor="Beige" Keyboard="Email"/>
+        <Label Text="Rol" TextColor="Beige" />
+        <Picker Title="Seleccioná un rol"
+        ItemsSource="{Binding Roles}"
+        SelectedItem="{Binding RolSeleccionado}"
+        TextColor="Black"
+        BackgroundColor="Beige"/>
+
+        <Entry Placeholder="Contraseña" Text="{Binding Usuario.Contrasena}" TextColor="Beige" IsPassword="True" />
+
+        <Button Text="{Binding TextoBotonGuardar}"
+                Command="{Binding GuardarCommand}"
+                BackgroundColor="#caa755"
+                TextColor="Black"
+                CornerRadius="10" />
+
+        <Button Text="Cancelar"
+                Command="{Binding CancelarCommand}"
+                BackgroundColor="#aaa"
+                TextColor="White"
+                CornerRadius="10"/>
+    </VerticalStackLayout>
+</ContentPage>
