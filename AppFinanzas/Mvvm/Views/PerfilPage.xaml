@@ -21,6 +21,9 @@
 
                 <Label Text="Email" FontAttributes="Bold" />
                 <Label Text="{Binding Usuario.Email}" />
+
+                <Label Text="Rol" FontAttributes="Bold" />
+                <Label Text="{Binding Usuario.Rol}" />
             </VerticalStackLayout>
         </Frame>
     </StackLayout>

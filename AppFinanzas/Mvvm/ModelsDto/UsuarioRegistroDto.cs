@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace AppFinanzas.Mvvm.ModelsDto
 {
-    public class UsuarioDto
+    public class UsuarioRegistroDto
     {
-        public int UsuarioId { get; set; }
         public string Nombre { get; set; }
         public string Email { get; set; }
+        public string Contrasena { get; set; }
         public string Rol { get; set; }
     }
 }

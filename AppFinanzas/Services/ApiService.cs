@@ -275,5 +275,59 @@ namespace AppFinanzas.Services
             var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<UsuarioDto>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
+
+        //////USUARIOS
+        public async Task<List<UsuarioDto>> GetUsuariosAsync()
+        {
+            var response = await _client.GetAsync($"{_baseUrl}/Usuarios");
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception("Error al obtener usuarios");
+
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<List<UsuarioDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+
+        public async Task CrearUsuarioAsync(UsuarioRegistroDto nuevoUsuario)
+        {
+            var json = JsonSerializer.Serialize(nuevoUsuario);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PostAsync($"{_baseUrl}/Usuarios/register", content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error {(int)response.StatusCode}: {error}");
+            }
+        }
+
+        public async Task ActualizarUsuarioAsync(int usuarioId, UsuarioEdicionDto usuario)
+        {
+            var json = JsonSerializer.Serialize(usuario);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _client.PutAsync($"{_baseUrl}/Usuarios/{usuarioId}", content);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error {(int)response.StatusCode}: {error}");
+            }
+        }
+
+        public async Task EliminarUsuarioAsync(int usuarioId)
+        {
+            var response = await _client.DeleteAsync($"{_baseUrl}/Usuarios/{usuarioId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new Exception($"No se pudo eliminar el usuario: {error}");
+            }
+        }
+
+
+
     }
 }

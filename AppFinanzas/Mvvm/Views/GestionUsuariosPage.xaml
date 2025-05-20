@@ -1,0 +1,89 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppFinanzas.Mvvm.Views.GestionUsuariosPage"
+             Title="Gestión de Usuarios"
+             BackgroundColor="#25241f">
+
+    <VerticalStackLayout Padding="20" Spacing="16">
+
+        <Label Text="Gestión de Usuarios (Solo administradores) " FontSize="28" TextColor="#caa755" HorizontalOptions="Center" />
+
+        <!-- Botón para agregar usuario -->
+        <Button Text="Agregar Usuario" 
+                Command="{Binding AgregarUsuarioCommand}" 
+                BackgroundColor="#caa755"
+                TextColor="Black"
+                CornerRadius="10"
+                Margin="0,0,0,10"/>
+
+        <!-- Lista de usuarios -->
+        <CollectionView ItemsSource="{Binding Usuarios}" SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame BackgroundColor="#35332f" CornerRadius="10" Padding="14" Margin="0,4">
+                        <Grid ColumnDefinitions="*,Auto,Auto" RowDefinitions="Auto">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Nombre}" FontSize="20" TextColor="White" />
+                                <Label Text="{Binding Email}" FontSize="13" TextColor="#bdbdbd" />
+                                <Label Text="{Binding Rol}" FontSize="13" TextColor="#caa755" />
+                            </VerticalStackLayout>
+                            <Button Text="Editar"
+                                    Grid.Column="1"
+                                    Margin="5,0"
+                                    Command="{Binding BindingContext.EditarUsuarioCommand, Source={x:Reference gestionUsuariosPage}}"
+                                    CommandParameter="{Binding .}"
+                                    BackgroundColor="#caa755"
+                                    TextColor="Black"
+                                    CornerRadius="8" />
+                            <Button Text="Eliminar"
+                                    Grid.Column="2"
+                                    Margin="5,0"
+                                    Command="{Binding BindingContext.EliminarUsuarioCommand, Source={x:Reference gestionUsuariosPage}}"
+                                    CommandParameter="{Binding UsuarioId}"
+                                    BackgroundColor="Red"
+                                    TextColor="White"
+                                    CornerRadius="8" />
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Panel para editar usuario existente -->
+        <Grid IsVisible="{Binding UsuarioEnEdicionVisible}" BackgroundColor="#00000099" Padding="0" RowDefinitions="*,Auto">
+            <Frame BackgroundColor="White" CornerRadius="15" Padding="24" Margin="0,60" VerticalOptions="Center">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Editar Usuario" FontSize="22" TextColor="#25241f"/>
+                    <Entry Placeholder="Nombre" Text="{Binding UsuarioEnEdicion.Nombre}" />
+                    <Entry Placeholder="Rol (Cliente/Administrador)" Text="{Binding UsuarioEnEdicion.Rol}" />
+                    <Entry Placeholder="Nueva Contraseña" Text="{Binding UsuarioEnEdicion.Contrasena}" IsPassword="True" />
+                    <Button Text="Guardar"
+                            Command="{Binding GuardarUsuarioCommand}" 
+                            BackgroundColor="#caa755"
+                            TextColor="Black"
+                            CornerRadius="10" />
+                    <Button Text="Cancelar" Command="{Binding CancelarEdicionCommand}" BackgroundColor="#aaa" TextColor="White" CornerRadius="10"/>
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+
+        <!-- Panel para alta de usuario nuevo -->
+        <Grid IsVisible="{Binding UsuarioNuevoVisible}" BackgroundColor="#00000099" Padding="0" RowDefinitions="*,Auto">
+            <Frame BackgroundColor="White" CornerRadius="15" Padding="24" Margin="0,60" VerticalOptions="Center">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Agregar Usuario" FontSize="22" TextColor="#25241f"/>
+                    <Entry Placeholder="Nombre" Text="{Binding UsuarioNuevo.Nombre}" />
+                    <Entry Placeholder="Email" Text="{Binding UsuarioNuevo.Email}" Keyboard="Email" />
+                    <Entry Placeholder="Rol (Cliente/Administrador)" Text="{Binding UsuarioNuevo.Rol}" />
+                    <Entry Placeholder="Contraseña" Text="{Binding UsuarioNuevo.Contrasena}" IsPassword="True" />
+                    <Button Text="Guardar"
+                            Command="{Binding GuardarUsuarioNuevoCommand}" 
+                            BackgroundColor="#caa755"
+                            TextColor="Black"
+                            CornerRadius="10" />
+                    <Button Text="Cancelar" Command="{Binding CancelarNuevoCommand}" BackgroundColor="#aaa" TextColor="White" CornerRadius="10"/>
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>

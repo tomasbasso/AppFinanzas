@@ -28,10 +28,16 @@ namespace AppFinanzas.Mvvm.ViewModels
             {
                 var usuario = await _apiService.LoginAsync(Email, Contrasena);
 
-                SesionActual.Usuario = usuario; // <- FIX
-
-                await Application.Current.MainPage.DisplayAlert("Éxito", $"Bienvenido {usuario.Email}", "OK");
+                SesionActual.Usuario = usuario;
+                if (usuario.Rol == "Cliente")
+                { 
+                await Application.Current.MainPage.DisplayAlert("Éxito", $"Bienvenido {usuario.Nombre}", "OK");
                 await Shell.Current.GoToAsync("//MenuPage");
+            } else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Éxito", $"Bienvenido {usuario.Nombre}", "OK");
+                    await Shell.Current.GoToAsync("//MenuAdminPage");
+                }
             }
             catch (Exception ex)
             {
