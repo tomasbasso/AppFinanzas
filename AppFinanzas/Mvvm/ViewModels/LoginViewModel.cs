@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Maui.Storage; // Para Preferences
 
 namespace AppFinanzas.Mvvm.ViewModels
 {
@@ -26,14 +27,24 @@ namespace AppFinanzas.Mvvm.ViewModels
         {
             try
             {
-                var usuario = await _apiService.LoginAsync(Email, Contrasena);
+                var loginResponse = await _apiService.LoginAsync(Email, Contrasena);
 
-                SesionActual.Usuario = usuario;
+                // Guardar en sesión en memoria
+                SesionActual.Token = loginResponse.Token;
+                SesionActual.Usuario = loginResponse.Usuario;
+
+                // Guardar en Preferences (persistente)
+                Preferences.Default.Set("jwt", loginResponse.Token);
+                Preferences.Default.Set("usuarioEmail", loginResponse.Usuario.Email);
+
+                var usuario = loginResponse.Usuario;
+
                 if (usuario.Rol == "Cliente")
-                { 
-                await Application.Current.MainPage.DisplayAlert("Éxito", $"Bienvenido {usuario.Nombre}", "OK");
-                await Shell.Current.GoToAsync("//MenuPage");
-            } else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Éxito", $"Bienvenido {usuario.Nombre}", "OK");
+                    await Shell.Current.GoToAsync("//MenuPage");
+                }
+                else
                 {
                     await Application.Current.MainPage.DisplayAlert("Éxito", $"Bienvenido {usuario.Nombre}", "OK");
                     await Shell.Current.GoToAsync("//MenuAdminPage");

@@ -4,21 +4,68 @@
              xmlns:viewModels="clr-namespace:AppFinanzas.Mvvm.ViewModels"
              x:Class="AppFinanzas.Mvvm.Views.NuevaCuentaPage"
              Title="Cuenta Bancaria"
-             BackgroundColor="#FAFAF8">
-
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#23221C">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
-            <Button Text="Volver"  Command="{Binding VolverCommand}"
-            BackgroundColor="LightGray" TextColor="Black"
-            CornerRadius="10" HeightRequest="50" />
+        <VerticalStackLayout Padding="20" Spacing="18">
 
-            <Entry Placeholder="Nombre" Text="{Binding Nombre}" />
-            <Entry Placeholder="Banco" Text="{Binding Banco}" />
-            <Picker Title="Tipo de Cuenta" ItemsSource="{Binding TiposCuenta}" SelectedItem="{Binding TipoCuenta}" />
-            <Entry Placeholder="Saldo inicial" Keyboard="Numeric" Text="{Binding Saldo}" />
-            <Button Text="Guardar" Command="{Binding GuardarCommand}" BackgroundColor="#1F2E46" TextColor="White"/>
-            <Button Text="Volver" Command="{Binding VolverCommand}" BackgroundColor="LightGray" TextColor="Black"/>
+            <!-- Encabezado decorativo -->
+            <Label Text="Nueva Cuenta"
+                   FontSize="26"
+                   TextColor="#caa755"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+            <BoxView HeightRequest="3" WidthRequest="120" Color="#caa755" HorizontalOptions="Center" Margin="0,0,0,10"/>
+
+            <Entry Placeholder="Nombre"
+                   Text="{Binding Nombre}"
+                   BackgroundColor="#292820"
+                   TextColor="White"
+                   PlaceholderColor="#cccccc"
+               
+                   Margin="0,8"/>
+
+            <Entry Placeholder="Banco"
+                   Text="{Binding Banco}"
+                   BackgroundColor="#292820"
+                   TextColor="White"
+                   PlaceholderColor="#cccccc"
+                
+                   Margin="0,8"/>
+            <Label Text="Tipo" TextColor= "#cccccc"></Label>
+            <Picker Title="Tipo de Cuenta"
+                    ItemsSource="{Binding TiposCuenta}"
+                    SelectedItem="{Binding TipoCuenta}"
+                    TextColor="White"
+                    BackgroundColor="#292820"
+                    Margin="0,8"/>
+
+            <Entry Placeholder="Saldo inicial"
+                   Keyboard="Numeric"
+                   Text="{Binding Saldo}"
+                   BackgroundColor="#292820"
+                   TextColor="White"
+                   PlaceholderColor="#cccccc"
+                 
+                   Margin="0,8"/>
+
+            <Button Text="Guardar"
+                    Command="{Binding GuardarCommand}"
+                    BackgroundColor="#caa755"
+                    TextColor="Black"
+                    FontAttributes="Bold"
+                    CornerRadius="12"
+                    HeightRequest="48"
+                    Margin="0,14,0,0"/>
+
+            <Button Text="Volver"
+                    Command="{Binding VolverCommand}"
+                    BackgroundColor="#bdbdbd"
+                    TextColor="Black"
+                    CornerRadius="12"
+                    HeightRequest="48"
+                    Margin="0,0,0,10"/>
 
         </VerticalStackLayout>
     </ScrollView>

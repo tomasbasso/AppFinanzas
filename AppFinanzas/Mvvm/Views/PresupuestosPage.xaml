@@ -3,66 +3,79 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:AppFinanzas.Mvvm.ViewModels"
              x:Class="AppFinanzas.Mvvm.Views.PresupuestosPage"
-             Title="Presupuestos">
+             Title="Presupuestos"
+              NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#23221C">
 
     <ContentPage.BindingContext>
         <viewModels:PresupuestosViewModel />
     </ContentPage.BindingContext>
     <ScrollView>
-        <VerticalStackLayout Padding="15">
-            
-            <Frame BackgroundColor="#1F2E46" CornerRadius="10" Padding="15" Margin="0,0,0,10">
-        <Label Text="Presupuestos"
-          HorizontalOptions="Center"
-          TextColor="White"
-          FontSize="20"
-          FontAttributes="Bold"/>
-    </Frame>
-    
-    <Button Text="Agregar nuevo presupuesto"
-    BackgroundColor="#4CAF50"
-    TextColor="White"
-    FontAttributes="Bold"
-    CornerRadius="10"
-    HeightRequest="45"
-    Command="{Binding IrANuevaCommand}"
-    Margin="0,0,0,15"/>
-    
+        <VerticalStackLayout Padding="20" Spacing="14">
+
+            <!-- Encabezado decorativo -->
+            <Label Text="Presupuestos"
+                   FontSize="26"
+                   TextColor="#caa755"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+            <BoxView HeightRequest="3" WidthRequest="140" Color="#caa755" HorizontalOptions="Center" Margin="0,0,0,10"/>
+
+            <Button Text="Agregar nuevo presupuesto"
+                BackgroundColor="#caa755"
+                TextColor="Black"
+                FontAttributes="Bold"
+                CornerRadius="12"
+                HeightRequest="45"
+                Command="{Binding IrANuevaCommand}"
+                Margin="0,0,0,10"/>
+
             <Button Text="Volver"  Command="{Binding VolverCommand}"
-        BackgroundColor="LightGray" TextColor="Black"
-        CornerRadius="10" HeightRequest="50" />
-            
+                BackgroundColor="#bdbdbd"
+                TextColor="Black"
+                CornerRadius="12"
+                HeightRequest="45"
+                Margin="0,0,0,10"/>
+
             <CollectionView ItemsSource="{Binding Presupuestos}">
-        <CollectionView.ItemTemplate>
-            <DataTemplate>
-                <Frame Margin="10" Padding="10" BackgroundColor="#f2f2f2" CornerRadius="12">
-                    <VerticalStackLayout Spacing="5">
-                        <Label Text="{Binding NombreCategoria, StringFormat='Categoria: {0}'}" FontAttributes="Bold" FontSize="16"/>
-                        <Label Text="{Binding MontoLimite, StringFormat='Límite: {0:C}'}" />
-                        <Label Text="{Binding Mes, StringFormat='Mes: {0}'}" />
-                        <Label Text="{Binding Año, StringFormat='Año: {0}'}" />
-                                <HorizontalStackLayout Spacing="10" Margin="0,10,0,0">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="0,8" Padding="15" BackgroundColor="#292820" CornerRadius="14" HasShadow="True">
+                            <VerticalStackLayout Spacing="4">
+                                <Label Text="{Binding NombreCategoria, StringFormat='Categoría: {0}'}"
+                                       FontAttributes="Bold"
+                                       FontSize="17"
+                                       TextColor="#caa755"/>
+                                <Label Text="{Binding MontoLimite, StringFormat='Límite: {0:C}'}"
+                                       FontSize="15"
+                                       TextColor="White"/>
+                                <Label Text="{Binding Mes, StringFormat='Mes: {0}'}"
+                                       FontSize="14"
+                                       TextColor="White"/>
+                                <Label Text="{Binding Año, StringFormat='Año: {0}'}"
+                                       FontSize="14"
+                                       TextColor="White"/>
+                                <HorizontalStackLayout Spacing="10" Margin="0,12,0,0">
                                     <Button Text="Editar"
-                                        BackgroundColor="#FFC107"
+                                        BackgroundColor="#caa755"
                                         TextColor="Black"
-                                        CornerRadius="8"
+                                        CornerRadius="9"
                                         HeightRequest="35"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:PresupuestosViewModel}}, Path=EditarCommand}"
                                         CommandParameter="{Binding .}" />
-
                                     <Button Text="Eliminar"
                                         BackgroundColor="#E53935"
                                         TextColor="White"
-                                        CornerRadius="8"
+                                        CornerRadius="9"
                                         HeightRequest="35"
                                         Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:PresupuestosViewModel}}, Path=EliminarCommand}"
                                         CommandParameter="{Binding .}" />
                                 </HorizontalStackLayout>
                             </VerticalStackLayout>
-                </Frame>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

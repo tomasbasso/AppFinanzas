@@ -10,11 +10,15 @@ public class TipoCambioViewModel : BaseViewModel
 
     public ObservableCollection<TipoCambioDto> TiposCambio { get; } = new();
     public ICommand CargarCommand { get; }
-
+    public ICommand VolverCommand { get; }
     public TipoCambioViewModel()
     {
         CargarCommand = new Command(async () => await CargarTiposCambio());
         CargarCommand.Execute(null);
+        VolverCommand = new Command(async () =>
+        {
+            await Application.Current.MainPage.Navigation.PopAsync();
+        });
     }
 
     private async Task CargarTiposCambio()

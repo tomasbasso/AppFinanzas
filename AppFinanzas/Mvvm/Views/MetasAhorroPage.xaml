@@ -4,54 +4,74 @@
              xmlns:viewModels="clr-namespace:AppFinanzas.Mvvm.ViewModels"
              xmlns:local="clr-namespace:AppFinanzas.Mvvm.Views"
              x:Class="AppFinanzas.Mvvm.Views.MetasAhorroPage"
-             Title="Metas de Ahorro">
+              NavigationPage.HasNavigationBar="False"
+             Title="Metas de Ahorro"
+             BackgroundColor="#23221C">
 
-    <StackLayout Padding="20">
-        <Label Text="Metas de ahorro" 
-               FontSize="24" 
-               FontAttributes="Bold" 
-               HorizontalOptions="Center"
-               Margin="0,10" />
-        <Button Text="Nueva Meta" Command="{Binding IrANuevaCommand}" />
-        <Button Text="Volver" Command="{Binding VolverCommand}"
-                BackgroundColor="LightGray" TextColor="Black"
-                CornerRadius="10" HeightRequest="50" />
-        <ScrollView>
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14">
+
+            <!-- Encabezado decorativo -->
+            <Label Text="Metas de Ahorro"
+                   FontSize="26"
+                   TextColor="#caa755"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   Margin="0,10"/>
+            <BoxView HeightRequest="3" WidthRequest="180" Color="#caa755" HorizontalOptions="Center" Margin="0,0,0,12"/>
+
+            <Button Text="Nueva Meta"
+                    Command="{Binding IrANuevaCommand}"
+                    BackgroundColor="#caa755"
+                    TextColor="Black"
+                    FontAttributes="Bold"
+                    CornerRadius="12"
+                    HeightRequest="45"
+                    Margin="0,0,0,10"/>
+
+            <Button Text="Volver"
+                    Command="{Binding VolverCommand}"
+                    BackgroundColor="#bdbdbd"
+                    TextColor="Black"
+                    CornerRadius="12"
+                    HeightRequest="45"
+                    Margin="0,0,0,10"/>
+
             <CollectionView ItemsSource="{Binding MetasAhorro}" Margin="0,10">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame BorderColor="Gray" CornerRadius="8" Padding="10" Margin="0,5">
-                        <VerticalStackLayout>
-                            <Label Text="{Binding Nombre}" FontSize="18" FontAttributes="Bold" />
-                            <Label Text="{Binding MontoObjetivo, StringFormat='Objetivo: {0:C}'}" />
-                            <Label Text="{Binding ProgresoActual, StringFormat='Progreso: {0:C}'}" />
-                            <Label Text="{Binding FechaLimite, StringFormat='Hasta: {0:dd/MM/yyyy}'}" />
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame CornerRadius="14" Padding="15" Margin="0,8" BackgroundColor="#292820" HasShadow="True">
+                            <VerticalStackLayout Spacing="4">
+                                <Label Text="{Binding Nombre}" FontSize="19" FontAttributes="Bold" TextColor="#caa755"/>
+                                <Label Text="{Binding MontoObjetivo, StringFormat='Objetivo: {0:C}'}" TextColor="White"/>
+                                <Label Text="{Binding ProgresoActual, StringFormat='Progreso: {0:C}'}" TextColor="White"/>
+                                <Label Text="{Binding FechaLimite, StringFormat='Hasta: {0:dd/MM/yyyy}'}" TextColor="#caa755"/>
 
-                            <!-- Botones de Editar y Eliminar -->
-                            <Grid ColumnDefinitions="*,*" Margin="0,10,0,0">
-                                <Button Text="Editar" 
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:MetasAhorroViewModel}}, Path=EditarCommand}"
-                                        CommandParameter="{Binding .}"
-                                        BackgroundColor="#3498db"
-                                        TextColor="White"
-                                        CornerRadius="5"
-                                        Margin="0,0,5,0"
-                                        Grid.Column="0"/>
+                                <!-- Botones de Editar y Eliminar -->
+                                <HorizontalStackLayout Spacing="10" Margin="0,10,0,0">
+                                    <Button Text="Editar" 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:MetasAhorroViewModel}}, Path=EditarCommand}"
+                                            CommandParameter="{Binding .}"
+                                            BackgroundColor="#caa755"
+                                            TextColor="Black"
+                                            CornerRadius="9"
+                                            HeightRequest="35"
+                                            WidthRequest="90" />
 
-                                <Button Text="Eliminar" 
-                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:MetasAhorroViewModel}}, Path=EliminarCommand}"
-                                        CommandParameter="{Binding .}"
-                                        BackgroundColor="#e74c3c"
-                                        TextColor="White"
-                                        CornerRadius="5"
-                                        Margin="5,0,0,0"
-                                        Grid.Column="1"/>
-                            </Grid>
-                        </VerticalStackLayout>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-            </ScrollView>
-    </StackLayout>
+                                    <Button Text="Eliminar" 
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:MetasAhorroViewModel}}, Path=EliminarCommand}"
+                                            CommandParameter="{Binding .}"
+                                            BackgroundColor="#E53935"
+                                            TextColor="White"
+                                            CornerRadius="9"
+                                            HeightRequest="35"
+                                            WidthRequest="90" />
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

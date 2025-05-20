@@ -3,24 +3,74 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AppFinanzas.Mvvm.Views.NuevaTransaccionPage"
              Title="Nueva Transacción"
-             BackgroundColor="#FAFAF8">
+              NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#23221C">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+        <VerticalStackLayout Padding="20" Spacing="18">
 
-            <Picker Title="Tipo" ItemsSource="{Binding Tipos}" SelectedItem="{Binding Tipo}" />
-            <Button Text="Volver"  Command="{Binding VolverCommand}"
-            BackgroundColor="LightGray" TextColor="Black"
-            CornerRadius="10" HeightRequest="50" />
+            <!-- Encabezado decorativo -->
+            <Label Text="Nueva Transacción"
+                   FontSize="26"
+                   TextColor="#caa755"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+            <BoxView HeightRequest="3" WidthRequest="180" Color="#caa755" HorizontalOptions="Center" Margin="0,0,0,12"/>
 
-            <Entry Placeholder="Monto" Keyboard="Numeric" Text="{Binding Monto}" />
-            <Entry Placeholder="Descripción" Text="{Binding Descripcion}" />
-            <DatePicker Date="{Binding Fecha}" />
+            <Picker Title="Tipo"
+                    ItemsSource="{Binding Tipos}"
+                    SelectedItem="{Binding Tipo}"
+                    TextColor="White"
+                    BackgroundColor="#292820"
+                    Margin="0,8"/>
 
-            <Picker Title="Cuenta" ItemsSource="{Binding Cuentas}" ItemDisplayBinding="{Binding Nombre}" SelectedItem="{Binding CuentaSeleccionada}" />
+            <Entry Placeholder="Monto"
+                   Keyboard="Numeric"
+                   Text="{Binding Monto}"
+                   BackgroundColor="#292820"
+                   TextColor="White"
+                   PlaceholderColor="#cccccc"
+                   
+                   Margin="0,8"/>
 
-            <Button Text="Guardar" Command="{Binding GuardarCommand}" BackgroundColor="#1F2E46" TextColor="White"/>
-            <Button Text="Volver"  Command="{Binding VolverCommand}"  BackgroundColor="LightGray" TextColor="Black" CornerRadius="10" HeightRequest="50" />
+            <Entry Placeholder="Descripción"
+                   Text="{Binding Descripcion}"
+                   BackgroundColor="#292820"
+                   TextColor="White"
+                   PlaceholderColor="#cccccc"
+                 
+                   Margin="0,8"/>
+
+            <DatePicker Date="{Binding Fecha}"
+                        TextColor="#caa755"
+                        BackgroundColor="#292820"
+                        Margin="0,8"/>
+            <Label Text="Cuenta" TextColor="#cccccc"></Label>
+            <Picker Title="Cuenta"
+                    ItemsSource="{Binding Cuentas}"
+                    ItemDisplayBinding="{Binding Nombre}"
+                    SelectedItem="{Binding CuentaSeleccionada}"
+                    TextColor="White"
+                    BackgroundColor="#292820"
+                    Margin="0,8"/>
+
+            <Button Text="Guardar"
+                    Command="{Binding GuardarCommand}"
+                    BackgroundColor="#caa755"
+                    TextColor="Black"
+                    FontAttributes="Bold"
+                    CornerRadius="12"
+                    HeightRequest="48"
+                    Margin="0,14,0,0"/>
+
+            <Button Text="Volver"
+                    Command="{Binding VolverCommand}"
+                    BackgroundColor="#bdbdbd"
+                    TextColor="Black"
+                    CornerRadius="12"
+                    HeightRequest="48"
+                    Margin="0,0,0,10"/>
+
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

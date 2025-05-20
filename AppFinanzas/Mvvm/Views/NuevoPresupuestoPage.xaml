@@ -4,52 +4,71 @@
              xmlns:viewModels="clr-namespace:AppFinanzas.Mvvm.ViewModels"
              x:Class="AppFinanzas.Mvvm.Views.NuevoPresupuestoPage"
              Title="Nuevo Presupuesto"
-             BackgroundColor="#FAFAF8">
-
-    <!--<ContentPage.BindingContext>
-        <viewModels:NuevoPresupuestoViewModel />
-    </ContentPage.BindingContext>-->
+              NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#23221C">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
+        <VerticalStackLayout Padding="20" Spacing="18">
 
-            <Label Text="Categoría de Gasto" FontAttributes="Bold"/>
+            <!-- Encabezado decorativo -->
+            <Label Text="Nuevo Presupuesto"
+                   FontSize="26"
+                   TextColor="#caa755"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+            <BoxView HeightRequest="3" WidthRequest="180" Color="#caa755" HorizontalOptions="Center" Margin="0,0,0,12"/>
 
-            <Button Text="Volver"  Command="{Binding VolverCommand}"
-            BackgroundColor="LightGray" TextColor="Black"
-            CornerRadius="10" HeightRequest="50" />
-
-            
+            <Label Text="Categoría de Gasto" FontAttributes="Bold" TextColor="White"/>
             <Picker ItemsSource="{Binding Categorias}"
                     ItemDisplayBinding="{Binding Nombre}"
-                    SelectedItem="{Binding CategoriaSeleccionada}" />
+                    SelectedItem="{Binding CategoriaSeleccionada}"
+                    TextColor="White"
+                    BackgroundColor="#292820"
+                    Margin="0,8"/>
 
             <Entry Placeholder="Monto límite"
                    Keyboard="Numeric"
-                   Text="{Binding MontoLimite}" />
+                   Text="{Binding MontoLimite}"
+                   BackgroundColor="#292820"
+                   TextColor="White"
+                   PlaceholderColor="#cccccc"
+                  
+                   Margin="0,8"/>
 
-            <Label Text="Mes" FontAttributes="Bold"/>
+            <Label Text="Mes" FontAttributes="Bold" TextColor="White"/>
             <Picker Title="Seleccione el Mes"
                     ItemsSource="{Binding Meses}"
-                    SelectedItem="{Binding MesSeleccionado}" />
+                    SelectedItem="{Binding MesSeleccionado}"
+                    TextColor="White"
+                    BackgroundColor="#292820"
+                    Margin="0,8"/>
 
-            <Label Text="Año" FontAttributes="Bold"/>
+            <Label Text="Año" FontAttributes="Bold" TextColor="White"/>
             <Entry Placeholder="Ingrese el Año"
                    Keyboard="Numeric"
-                   Text="{Binding Anio}" />
+                   Text="{Binding Anio}"
+                   BackgroundColor="#292820"
+                   TextColor="White"
+                   PlaceholderColor="#cccccc"
+                
+                   Margin="0,8"/>
 
             <Button Text="Guardar"
                     Command="{Binding GuardarCommand}"
-                    BackgroundColor="#1F2E46"
-                    TextColor="White"
-                    HeightRequest="45" />
+                    BackgroundColor="#caa755"
+                    TextColor="Black"
+                    FontAttributes="Bold"
+                    CornerRadius="12"
+                    HeightRequest="48"
+                    Margin="0,14,0,0"/>
 
             <Button Text="Volver"
                     Command="{Binding VolverCommand}"
-                    BackgroundColor="LightGray"
+                    BackgroundColor="#bdbdbd"
                     TextColor="Black"
-                    HeightRequest="45" />
-
+                    CornerRadius="12"
+                    HeightRequest="48"
+                    Margin="0,0,0,10"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>
