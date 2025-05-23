@@ -99,6 +99,9 @@
 	  <MauiXaml Update="Mvvm\Views\PresupuestosPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Mvvm\Views\RegistroUsuarioPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Mvvm\Views\TipoCambioPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

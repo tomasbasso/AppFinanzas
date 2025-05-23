@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Maui.Storage; // Para Preferences
+using Microsoft.Maui.Storage;
+using System.Windows.Input;
+using AppFinanzas.Mvvm.Views; // Para Preferences
 
 namespace AppFinanzas.Mvvm.ViewModels
 {
@@ -17,12 +19,14 @@ namespace AppFinanzas.Mvvm.ViewModels
         public string Contrasena { get; set; }
 
         public Command LoginCommand { get; }
-
+        public ICommand IrARegistroCommand { get; }
         public LoginViewModel()
         {
             LoginCommand = new Command(async () => await Login());
-        }
+            IrARegistroCommand = new Command(async () => await Shell.Current.GoToAsync("//RegistroUsuarioPage"));
 
+
+        }
         private async Task Login()
         {
             try

@@ -46,14 +46,11 @@
                    FontSize="14"
                    TextColor="Gray" />
 
-            <Label Text="Eres nuevo? Registrate aqui"
-                   HorizontalOptions="Center"
-                   FontSize="14"
-                   TextColor="Gray">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding NavigateToRegisterCommand}" />
-                </Label.GestureRecognizers>
-            </Label>
+            <Button Text="¿No tenés cuenta? Registrate"
+                Command="{Binding IrARegistroCommand}"
+                BackgroundColor="#caa755"
+                TextColor="Black"
+                Margin="0,10"/>
 
         </VerticalStackLayout>
     </ScrollView>

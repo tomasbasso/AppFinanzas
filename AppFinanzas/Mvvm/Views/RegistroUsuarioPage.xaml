@@ -1,0 +1,18 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:AppFinanzas.Mvvm.ViewModels"
+             x:Class="AppFinanzas.Mvvm.Views.RegistroUsuarioPage"
+             BackgroundColor="#25241f"
+             Title="Registro">
+
+    <VerticalStackLayout Padding="25" Spacing="15">
+        <Entry Placeholder="Nombre" Text="{Binding Nombre}" TextColor="White" />
+        <Entry Placeholder="Email" Text="{Binding Email}" Keyboard="Email" TextColor="White" />
+        <Label Text="Rol:" TextColor="White" ></Label>
+        <Picker Title="Rol" ItemsSource="{Binding Roles}" SelectedItem="{Binding RolSeleccionado}" TextColor="White" />
+        <Entry Placeholder="Contraseña" Text="{Binding Contrasena}" IsPassword="True" TextColor="White" />
+
+        <Button Text="Crear Cuenta" Command="{Binding RegistrarCommand}" BackgroundColor="#caa755" TextColor="Black"/>
+        <Button Text="Volver" Command="{Binding VolverCommand}" BackgroundColor="LightGray" TextColor="Black"/>
+    </VerticalStackLayout>
+</ContentPage>
