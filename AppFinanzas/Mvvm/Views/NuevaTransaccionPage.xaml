@@ -24,6 +24,28 @@
                     BackgroundColor="#292820"
                     Margin="0,8"/>
 
+            <Label Text="Categoría"
+                   TextColor="#cccccc"
+                   Margin="0,4,0,0"/>
+
+            <Picker Title="Categoría de gasto"
+                    ItemsSource="{Binding CategoriasGasto}"
+                    ItemDisplayBinding="{Binding Nombre}"
+                    SelectedItem="{Binding CategoriaGastoSeleccionada}"
+                    IsVisible="{Binding EsGasto}"
+                    TextColor="White"
+                    BackgroundColor="#292820"
+                    Margin="0,4"/>
+
+            <Picker Title="Categoría de ingreso"
+                    ItemsSource="{Binding CategoriasIngreso}"
+                    ItemDisplayBinding="{Binding Nombre}"
+                    SelectedItem="{Binding CategoriaIngresoSeleccionada}"
+                    IsVisible="{Binding EsIngreso}"
+                    TextColor="White"
+                    BackgroundColor="#292820"
+                    Margin="0,4"/>
+
             <Entry Placeholder="Monto"
                    Keyboard="Numeric"
                    Text="{Binding Monto}"

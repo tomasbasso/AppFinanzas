@@ -1,6 +1,7 @@
-﻿using AppFinanzas.Mvvm.ModelsDto;
+using AppFinanzas.Mvvm.ModelsDto;
 using AppFinanzas.Services;
 using System.Collections.ObjectModel;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -9,8 +10,8 @@ namespace AppFinanzas.Mvvm.ViewModels
     public class UsuarioFormViewModel : BaseViewModel
     {
         private readonly ApiService _apiService = new();
+        private bool _isSaving;
 
-        // === Campos internos + SetProperty para notificación ===
         private int _usuarioId;
         public int UsuarioId
         {
@@ -53,33 +54,28 @@ namespace AppFinanzas.Mvvm.ViewModels
             set => SetProperty(ref _esEdicion, value);
         }
 
-        // === Para el Picker ===
         public ObservableCollection<string> Roles { get; } =
             new ObservableCollection<string> { "Cliente", "Administrador" };
 
-        // === Props calculadas ===
         public string TituloPagina =>
             EsEdicion ? "Editar Usuario" : "Nuevo Usuario";
         public string TextoBotonGuardar =>
             EsEdicion ? "Guardar Cambios" : "Crear Usuario";
         public string PlaceholderContrasena =>
             EsEdicion
-                ? "Nueva Contraseña (opcional)"
-                : "Contraseña";
+                ? "Nueva Contrasena (opcional)"
+                : "Contrasena";
 
-        // === Comandos ===
         public ICommand GuardarCommand { get; }
         public ICommand CancelarCommand { get; }
 
         public UsuarioFormViewModel()
         {
-            GuardarCommand = new Command(async () => await GuardarUsuario());
+            GuardarCommand = new Command(async () => await GuardarUsuario(), () => !_isSaving);
             CancelarCommand = new Command(async () => await Shell.Current.GoToAsync(".."));
-            // inicializamos en modo "nuevo"
             EsEdicion = false;
         }
 
-        // === Llenar campos al editar ===
         public void CargarUsuario(UsuarioDto usuario)
         {
             UsuarioId = usuario.UsuarioId;
@@ -89,59 +85,92 @@ namespace AppFinanzas.Mvvm.ViewModels
             Contrasena = string.Empty;
             EsEdicion = true;
 
-            // disparar notificaciones de props derivadas
             OnPropertyChanged(nameof(TituloPagina));
             OnPropertyChanged(nameof(TextoBotonGuardar));
             OnPropertyChanged(nameof(PlaceholderContrasena));
         }
 
-        // === Lógica de guardar ===
+        private bool EmailValido(string email) =>
+            !string.IsNullOrWhiteSpace(email) &&
+            Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+
         private async Task GuardarUsuario()
         {
+            if (_isSaving)
+                return;
+
+            if (string.IsNullOrWhiteSpace(Nombre))
+            {
+                await Shell.Current.DisplayAlert("Error", "El nombre es obligatorio.", "OK");
+                return;
+            }
+
+            if (!EmailValido(Email))
+            {
+                await Shell.Current.DisplayAlert("Error", "Email invalido.", "OK");
+                return;
+            }
+
             if (string.IsNullOrEmpty(RolSeleccionado))
             {
-                await Shell.Current.DisplayAlert(
-                    "Error", "Debés seleccionar un rol.", "OK");
+                await Shell.Current.DisplayAlert("Error", "Debes seleccionar un rol.", "OK");
+                return;
+            }
+
+            if (!EsEdicion && (string.IsNullOrWhiteSpace(Contrasena) || Contrasena.Length < 6))
+            {
+                await Shell.Current.DisplayAlert("Error", "La contraseña debe tener al menos 6 caracteres.", "OK");
+                return;
+            }
+
+            if (EsEdicion && !string.IsNullOrWhiteSpace(Contrasena) && Contrasena.Length < 6)
+            {
+                await Shell.Current.DisplayAlert("Error", "La nueva contraseña debe tener al menos 6 caracteres.", "OK");
                 return;
             }
 
             try
             {
+                _isSaving = true;
+                ((Command)GuardarCommand).ChangeCanExecute();
+
                 if (EsEdicion)
                 {
                     var dto = new UsuarioEdicionDto
                     {
                         UsuarioId = UsuarioId,
-                        Nombre = Nombre,
+                        Nombre = Nombre.Trim(),
                         Rol = RolSeleccionado,
                         Contrasena = string.IsNullOrWhiteSpace(Contrasena)
                                       ? null
                                       : Contrasena
                     };
                     await _apiService.ActualizarUsuarioAsync(UsuarioId, dto);
-                    await Shell.Current.DisplayAlert(
-                        "Listo", "Usuario editado correctamente", "OK");
+                    await Shell.Current.DisplayAlert("Listo", "Usuario editado correctamente", "OK");
                 }
                 else
                 {
                     var dto = new UsuarioRegistroDto
                     {
-                        Nombre = Nombre,
-                        Email = Email,
+                        Nombre = Nombre.Trim(),
+                        Email = Email.Trim(),
                         Contrasena = Contrasena,
                         Rol = RolSeleccionado
                     };
                     await _apiService.CrearUsuarioAsync(dto);
-                    await Shell.Current.DisplayAlert(
-                        "Listo", "Usuario creado correctamente", "OK");
+                    await Shell.Current.DisplayAlert("Listo", "Usuario creado correctamente", "OK");
                 }
 
-                // Volver atrás
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)
             {
                 await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+            finally
+            {
+                _isSaving = false;
+                ((Command)GuardarCommand).ChangeCanExecute();
             }
         }
     }

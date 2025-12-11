@@ -60,7 +60,10 @@ namespace AppFinanzas.Services
             SesionActual.Token = null;
             SesionActual.Usuario = null;
             try { Preferences.Default.Remove("jwt"); } catch { }
-            try { await SecureStorage.SetAsync("jwt", string.Empty); } catch { }
+            try { Preferences.Default.Remove("refreshToken"); } catch { }
+            try { Preferences.Default.Remove("usuarioEmail"); } catch { }
+            try { SecureStorage.Remove("jwt"); } catch { try { await SecureStorage.SetAsync("jwt", string.Empty); } catch { } }
+            try { SecureStorage.Remove("refreshToken"); } catch { try { await SecureStorage.SetAsync("refreshToken", string.Empty); } catch { } }
         }
 
         ////////////// LOGIN (no requiere token)
@@ -150,7 +153,7 @@ namespace AppFinanzas.Services
             {
                 cuenta.Nombre,
                 cuenta.Banco,
-                SaldoInicial = cuenta.Saldo,
+                SaldoActual = cuenta.Saldo,
                 cuenta.TipoCuenta,
                 cuenta.UsuarioId
             };
@@ -297,6 +300,39 @@ namespace AppFinanzas.Services
 
             var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<List<CategoriaGastoDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+
+        public async Task<List<CategoriaIngresoDto>> GetCategoriasIngresoAsync()
+        {
+            AddAuthHeader();
+
+            // Algunas APIs usan rutas ligeramente distintas; probamos varias para evitar romper la carga en UI.
+            var endpoints = new[] { "CategoriasIngreso", "CategoriaIngreso", "CategoriasIngresos", "CategoriaIngresos" };
+            Exception? lastError = null;
+
+            foreach (var endpoint in endpoints)
+            {
+                try
+                {
+                    var response = await _client.GetAsync($"{_baseUrl}/{endpoint}");
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        lastError = new Exception($"Código {(int)response.StatusCode} en /{endpoint}");
+                        continue;
+                    }
+
+                    var json = await response.Content.ReadAsStringAsync();
+                    var data = JsonSerializer.Deserialize<List<CategoriaIngresoDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    if (data != null)
+                        return data;
+                }
+                catch (Exception ex)
+                {
+                    lastError = ex;
+                }
+            }
+
+            throw new Exception($"Error al obtener las categorias de ingreso. Intentos: {string.Join(", ", endpoints)}. Detalle: {lastError?.Message}");
         }
 
         //////////// METAS AHORRO

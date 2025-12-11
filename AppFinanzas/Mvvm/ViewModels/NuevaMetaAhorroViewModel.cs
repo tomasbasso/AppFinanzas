@@ -1,7 +1,9 @@
 using AppFinanzas.Data;
 using AppFinanzas.Mvvm.ModelsDto;
 using AppFinanzas.Services;
+using System;
 using System.Globalization;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace AppFinanzas.Mvvm.ViewModels
@@ -10,6 +12,7 @@ namespace AppFinanzas.Mvvm.ViewModels
     {
         private readonly ApiService _apiService = new();
         private MetaAhorroDto _metaEnEdicion;
+        private bool _isSaving;
 
         private string _nombre;
         public string Nombre
@@ -44,7 +47,7 @@ namespace AppFinanzas.Mvvm.ViewModels
 
         public NuevaMetaAhorroViewModel()
         {
-            GuardarCommand = new Command(async () => await GuardarAsync());
+            GuardarCommand = new Command(async () => await GuardarAsync(), () => !_isSaving);
             VolverCommand = new Command(async () =>
             {
                 await Shell.Current.GoToAsync("//MenuPage/MetasAhorroPage");
@@ -53,6 +56,9 @@ namespace AppFinanzas.Mvvm.ViewModels
 
         private async Task GuardarAsync()
         {
+            if (_isSaving)
+                return;
+
             if (string.IsNullOrWhiteSpace(Nombre))
             {
                 await Shell.Current.DisplayAlert("Error", "Debe ingresar un nombre para la meta.", "OK");
@@ -65,6 +71,25 @@ namespace AppFinanzas.Mvvm.ViewModels
                 return;
             }
 
+            if (montoDecimal <= 0)
+            {
+                await Shell.Current.DisplayAlert("Error", "El monto objetivo debe ser mayor a cero.", "OK");
+                return;
+            }
+
+            if (FechaLimite < DateTime.Today)
+            {
+                await Shell.Current.DisplayAlert("Error", "La fecha limite debe ser igual o posterior a hoy.", "OK");
+                return;
+            }
+
+            if (SesionActual.Usuario == null)
+            {
+                await Shell.Current.DisplayAlert("Sesion expirada", "Vuelve a iniciar sesion.", "OK");
+                await Shell.Current.GoToAsync("//LoginPage");
+                return;
+            }
+
             var meta = _metaEnEdicion != null
                 ? new MetaAhorroDto
                 {
@@ -73,16 +98,19 @@ namespace AppFinanzas.Mvvm.ViewModels
                 }
                 : new MetaAhorroDto
                 {
-                    UsuarioId = SesionActual.Usuario!.UsuarioId
+                    UsuarioId = SesionActual.Usuario.UsuarioId
                 };
 
-            meta.Nombre = Nombre;
+            meta.Nombre = Nombre.Trim();
             meta.MontoObjetivo = montoDecimal;
             meta.FechaLimite = FechaLimite;
             meta.ProgresoActual = ProgresoActual;
 
             try
             {
+                _isSaving = true;
+                ((Command)GuardarCommand).ChangeCanExecute();
+
                 if (_metaEnEdicion != null)
                 {
                     await _apiService.EditarMetaAhorroAsync(meta);
@@ -99,6 +127,11 @@ namespace AppFinanzas.Mvvm.ViewModels
             catch (Exception ex)
             {
                 await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+            finally
+            {
+                _isSaving = false;
+                ((Command)GuardarCommand).ChangeCanExecute();
             }
         }
 

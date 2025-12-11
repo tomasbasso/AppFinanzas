@@ -1,8 +1,8 @@
-﻿using System;
+using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AppFinanzas.Data;
-using AppFinanzas.Mvvm.ModelsDto;
 using AppFinanzas.Services;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
@@ -45,7 +45,7 @@ namespace AppFinanzas.Mvvm.ViewModels
 
         public LoginViewModel()
         {
-            LoginCommand = new Command(async () => await Login());
+            LoginCommand = new Command(async () => await Login(), () => !IsLoading);
             IrARegistroCommand = new Command(async () => await Shell.Current.GoToAsync("//RegistroUsuarioPage"));
         }
 
@@ -54,16 +54,28 @@ namespace AppFinanzas.Mvvm.ViewModels
             if (IsLoading)
                 return;
 
+            if (string.IsNullOrWhiteSpace(Email) || !Regex.IsMatch(Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            {
+                await Application.Current?.MainPage?.DisplayAlert("Error", "Email invalido.", "OK");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(Contrasena))
+            {
+                await Application.Current?.MainPage?.DisplayAlert("Error", "Debe ingresar la contraseña.", "OK");
+                return;
+            }
+
             try
             {
                 IsLoading = true;
+                ((Command)LoginCommand).ChangeCanExecute();
 
-                var loginResponse = await _apiService.LoginAsync(Email, Contrasena);
+                var loginResponse = await _apiService.LoginAsync(Email.Trim(), Contrasena);
 
                 SesionActual.Token = loginResponse.Token;
                 SesionActual.Usuario = loginResponse.Usuario;
 
-                // Guardar token de forma segura (SecureStorage) y fallback a Preferences
                 if (!string.IsNullOrEmpty(loginResponse?.Token))
                 {
                     try { await SecureStorage.SetAsync("jwt", loginResponse.Token); }
@@ -79,12 +91,12 @@ namespace AppFinanzas.Mvvm.ViewModels
                 var page = Application.Current?.MainPage;
                 if (usuario != null && string.Equals(usuario.Rol, "Cliente", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (page != null) await page.DisplayAlert("Éxito", $"Bienvenido {usuario.Nombre}", "OK");
+                    if (page != null) await page.DisplayAlert("Exito", $"Bienvenido {usuario.Nombre}", "OK");
                     await Shell.Current.GoToAsync("//MenuPage");
                 }
                 else
                 {
-                    if (page != null) await page.DisplayAlert("Éxito", $"Bienvenido {usuario?.Nombre}", "OK");
+                    if (page != null) await page.DisplayAlert("Exito", $"Bienvenido {usuario?.Nombre}", "OK");
                     await Shell.Current.GoToAsync("//MenuAdminPage");
                 }
             }
@@ -96,6 +108,7 @@ namespace AppFinanzas.Mvvm.ViewModels
             finally
             {
                 IsLoading = false;
+                ((Command)LoginCommand).ChangeCanExecute();
             }
         }
     }

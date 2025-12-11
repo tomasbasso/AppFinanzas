@@ -47,7 +47,7 @@
                                 <Label Text="{Binding Nombre}" FontAttributes="Bold" FontSize="19" TextColor="#caa755"/>
                                 <Label Text="{Binding Banco}" FontSize="14" TextColor="White"/>
                                 <Label Text="{Binding TipoCuenta}" FontSize="14" TextColor="White"/>
-                                <Label Text="{Binding Saldo, StringFormat='Saldo: {0:C}'}" FontSize="14" TextColor="White"/>
+                                <Label Text="{Binding SaldoActual, StringFormat='Saldo: {0:C}'}" FontSize="14" TextColor="White"/>
                                 <HorizontalStackLayout Spacing="10" Margin="0,12,0,0">
                                     <Button Text="Editar"
                                         BackgroundColor="#caa755"

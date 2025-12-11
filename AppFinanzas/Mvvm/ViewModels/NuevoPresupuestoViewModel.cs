@@ -1,10 +1,12 @@
-﻿using AppFinanzas.Data;
+using AppFinanzas.Data;
 using AppFinanzas.Mvvm.ModelsDto;
 using AppFinanzas.Services;
+using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
-
 
 namespace AppFinanzas.Mvvm.ViewModels
 {
@@ -12,6 +14,7 @@ namespace AppFinanzas.Mvvm.ViewModels
     public class NuevoPresupuestoViewModel : BaseViewModel
     {
         private readonly ApiService _apiService = new();
+        private bool _isSaving;
 
         public ObservableCollection<CategoriaGastoDto> Categorias { get; } = new();
         public List<string> Meses { get; } = new()
@@ -20,7 +23,6 @@ namespace AppFinanzas.Mvvm.ViewModels
             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
         };
 
-        // Propiedades públicas
         public CategoriaGastoDto CategoriaSeleccionada { get; set; }
         public string MontoLimite { get; set; }
         public string MesSeleccionado { get; set; }
@@ -29,11 +31,10 @@ namespace AppFinanzas.Mvvm.ViewModels
         public PresupuestoDto Presupuesto { get; set; }
         public ICommand VolverCommand { get; }
         public ICommand GuardarCommand { get; }
-    
 
         public NuevoPresupuestoViewModel()
         {
-            GuardarCommand = new Command(async () => await GuardarAsync());
+            GuardarCommand = new Command(async () => await GuardarAsync(), () => !_isSaving);
             VolverCommand = new Command(async () =>
             {
                 await Shell.Current.GoToAsync("//MenuPage/PresupuestosPage");
@@ -41,18 +42,23 @@ namespace AppFinanzas.Mvvm.ViewModels
 
             _ = CargarCategoriasAsync();
         }
-        
 
         private async Task CargarCategoriasAsync()
         {
-            var lista = await _apiService.GetCategoriasGastoAsync();
-            Categorias.Clear();
-            foreach (var cat in lista)
-                Categorias.Add(cat);
+            try
+            {
+                var lista = await _apiService.GetCategoriasGastoAsync();
+                Categorias.Clear();
+                foreach (var cat in lista)
+                    Categorias.Add(cat);
 
-            // Si se está editando y ya vino el presupuesto, cargar datos
-            if (Presupuesto != null)
-                CargarDesdePresupuesto();
+                if (Presupuesto != null)
+                    CargarDesdePresupuesto();
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"No se pudieron cargar categorias: {ex.Message}", "OK");
+            }
         }
 
         private void CargarDesdePresupuesto()
@@ -61,7 +67,7 @@ namespace AppFinanzas.Mvvm.ViewModels
 
             MontoLimite = Presupuesto.MontoLimite.ToString(CultureInfo.InvariantCulture);
             Anio = Presupuesto.Año.ToString();
-            MesSeleccionado = Meses[Presupuesto.Mes - 1]; // Convertir 1 a "Enero"
+            MesSeleccionado = Meses[Presupuesto.Mes - 1];
             CategoriaSeleccionada = Categorias.FirstOrDefault(c => c.CategoriaGastoId == Presupuesto.CategoriaGastoId);
 
             OnPropertyChanged(nameof(MontoLimite));
@@ -72,15 +78,24 @@ namespace AppFinanzas.Mvvm.ViewModels
 
         private async Task GuardarAsync()
         {
+            if (_isSaving)
+                return;
+
             if (CategoriaSeleccionada == null)
             {
-                await Shell.Current.DisplayAlert("Error", "Debe seleccionar una categoría.", "OK");
+                await Shell.Current.DisplayAlert("Error", "Debe seleccionar una categoria.", "OK");
                 return;
             }
 
             if (!decimal.TryParse(MontoLimite, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal montoDecimal))
             {
-                await Shell.Current.DisplayAlert("Error", "Monto inválido.", "OK");
+                await Shell.Current.DisplayAlert("Error", "Monto invalido.", "OK");
+                return;
+            }
+
+            if (montoDecimal <= 0)
+            {
+                await Shell.Current.DisplayAlert("Error", "El monto debe ser mayor a cero.", "OK");
                 return;
             }
 
@@ -92,7 +107,20 @@ namespace AppFinanzas.Mvvm.ViewModels
 
             if (!int.TryParse(Anio, out int anioNum))
             {
-                await Shell.Current.DisplayAlert("Error", "Año inválido.", "OK");
+                await Shell.Current.DisplayAlert("Error", "Año invalido.", "OK");
+                return;
+            }
+
+            if (anioNum < DateTime.Today.Year - 5 || anioNum > DateTime.Today.Year + 5)
+            {
+                await Shell.Current.DisplayAlert("Error", "El año ingresado no es válido.", "OK");
+                return;
+            }
+
+            if (SesionActual.Usuario == null)
+            {
+                await Shell.Current.DisplayAlert("Sesion expirada", "Vuelve a iniciar sesion.", "OK");
+                await Shell.Current.GoToAsync("//LoginPage");
                 return;
             }
 
@@ -104,22 +132,30 @@ namespace AppFinanzas.Mvvm.ViewModels
                 MontoLimite = montoDecimal,
                 Mes = Meses.IndexOf(MesSeleccionado) + 1,
                 Año = anioNum,
-                UsuarioId = SesionActual.Usuario!.UsuarioId
+                UsuarioId = SesionActual.Usuario.UsuarioId
             };
 
             try
             {
+                _isSaving = true;
+                ((Command)GuardarCommand).ChangeCanExecute();
+
                 if (Presupuesto == null || Presupuesto.PresupuestoId == 0)
                     await _apiService.CrearPresupuestoAsync(dto);
                 else
                     await _apiService.EditarPresupuestoAsync(dto);
 
-                await Shell.Current.DisplayAlert("Éxito", "Presupuesto guardado.", "OK");
+                await Shell.Current.DisplayAlert("Exito", "Presupuesto guardado.", "OK");
                 await Shell.Current.GoToAsync("//MenuPage/PresupuestosPage");
             }
             catch (Exception ex)
             {
                 await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+            }
+            finally
+            {
+                _isSaving = false;
+                ((Command)GuardarCommand).ChangeCanExecute();
             }
         }
     }
