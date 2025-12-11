@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Text.Json;
 using AppFinanzas.Mvvm.Views;
+using AppFinanzas.Data;
 
 namespace AppFinanzas.Mvvm.ViewModels
 {
@@ -22,16 +23,29 @@ namespace AppFinanzas.Mvvm.ViewModels
         {
             CargarMetasCommand = new Command(async () => await CargarMetas());
             CargarMetasCommand.Execute(null);
-            VolverCommand = new Command(async () =>
-            {
-                await Application.Current.MainPage.Navigation.PopAsync();
-            });
+         
             IrANuevaCommand = new Command(async () =>
             {
                 await Application.Current.MainPage.Navigation.PushAsync(new NuevaMetaAhorroPage());
             });
             EditarCommand = new Command<MetaAhorroDto>(async (meta_ahorro) => await EditarMetaAhorro(meta_ahorro));
             EliminarCommand = new Command<MetaAhorroDto>(async (meta_ahorro) => await EliminarMetaAhorro(meta_ahorro));
+            VolverCommand = new Command(async () => await VolverAlMenuAsync());
+        }
+        private async Task VolverAlMenuAsync()
+        {
+            var rol = SesionActual.Usuario?.Rol;
+
+            if (string.Equals(rol, "Administrador", StringComparison.OrdinalIgnoreCase))
+            {
+                // Menú para admin
+                await Shell.Current.GoToAsync("//MenuAdminPage");
+            }
+            else
+            {
+                // Menú de usuario común (fallback si no hay sesión)
+                await Shell.Current.GoToAsync("//MenuPage");
+            }
         }
         private async Task EliminarMetaAhorro(MetaAhorroDto meta_ahorro)
         {

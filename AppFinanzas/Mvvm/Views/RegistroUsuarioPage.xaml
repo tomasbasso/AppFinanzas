@@ -5,7 +5,8 @@
              BackgroundColor="#25241f"
              Title="Registro">
 
-    <VerticalStackLayout Padding="25" Spacing="15">
+    <ScrollView>    
+        <VerticalStackLayout Padding="25" Spacing="15">
         <Entry Placeholder="Nombre" Text="{Binding Nombre}" TextColor="White" />
         <Entry Placeholder="Email" Text="{Binding Email}" Keyboard="Email" TextColor="White" />
         <Label Text="Rol:" TextColor="White" ></Label>
@@ -15,4 +16,6 @@
         <Button Text="Crear Cuenta" Command="{Binding RegistrarCommand}" BackgroundColor="#caa755" TextColor="Black"/>
         <Button Text="Volver" Command="{Binding VolverCommand}" BackgroundColor="LightGray" TextColor="Black"/>
     </VerticalStackLayout>
+    </ScrollView>
+    
 </ContentPage>

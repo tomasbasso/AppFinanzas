@@ -20,6 +20,7 @@
     <ShellContent Route="GestionUsuariosPage" ContentTemplate="{DataTemplate views:GestionUsuariosPage}" />
     <ShellContent Route="RegistroUsuarioPage" ContentTemplate="{DataTemplate views:RegistroUsuarioPage}" />
     <ShellContent Route="UsuarioFormPage" ContentTemplate="{DataTemplate views:UsuarioFormPage}" />
+    <ShellContent Route="MenuConfiguracionPage" ContentTemplate="{DataTemplate views:MenuConfiguracionPage}" />
     
 
 

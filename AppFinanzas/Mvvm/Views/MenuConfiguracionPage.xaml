@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppFinanzas.Mvvm.Views.MenuConfiguracionPage"
+             Title="Configuración"
+             Padding="20">
+
+    <VerticalStackLayout Spacing="20">
+        <Label Text="Color del menú principal (no persistente)" FontSize="18" HorizontalOptions="Center" />
+
+    <CollectionView x:Name="ColorsCollection" ItemsLayout="HorizontalList" HeightRequest="80" SelectionMode="Single"
+            ItemsSource="{Binding AvailableColors}"
+            SelectedItem="{Binding SelectedColor, Mode=TwoWay}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10" Margin="6" CornerRadius="8" HasShadow="False" BorderColor="Transparent">
+                        <Frame.Triggers>
+                            <DataTrigger TargetType="Frame" Binding="{Binding Source={x:Reference ColorsCollection}, Path=SelectedItem}" Value="{Binding}">
+                                <Setter Property="BorderColor" Value="#5b21b6" />
+                                <Setter Property="HasShadow" Value="True" />
+                            </DataTrigger>
+                        </Frame.Triggers>
+                        <Grid>
+                            <BoxView Color="{Binding}" WidthRequest="48" HeightRequest="48" CornerRadius="6" />
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Label x:Name="SelectedColorLabel" Text="Selecciona un color" HorizontalOptions="Center" />
+
+        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+            <Button Text="Aplicar" Clicked="OnApplyClicked" />
+            <Button Text="Cancelar" Clicked="OnCancelClicked" />
+            <Button Text="Aplicar" Command="{Binding ApplyColorCommand}" />
+            <Button Text="Cancelar" Command="{Binding CancelCommand}" />
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>

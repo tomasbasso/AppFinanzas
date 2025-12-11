@@ -5,6 +5,8 @@ namespace AppFinanzas.Mvvm.Views;
 
 public partial class UsuarioFormPage : ContentPage
 {
+    UsuarioFormViewModel ViewModel => BindingContext as UsuarioFormViewModel;
+
     public UsuarioFormPage()
     {
         InitializeComponent();
@@ -13,6 +15,6 @@ public partial class UsuarioFormPage : ContentPage
 
     public UsuarioFormPage(UsuarioDto usuario) : this()
     {
-        (BindingContext as UsuarioFormViewModel)?.CargarUsuario(usuario);
+        ViewModel.CargarUsuario(usuario);
     }
 }

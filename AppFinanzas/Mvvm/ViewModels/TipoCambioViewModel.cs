@@ -1,4 +1,5 @@
-﻿using AppFinanzas.Mvvm.ModelsDto;
+﻿using AppFinanzas.Data;
+using AppFinanzas.Mvvm.ModelsDto;
 using AppFinanzas.Mvvm.ViewModels;
 using AppFinanzas.Services;
 using System.Collections.ObjectModel;
@@ -15,12 +16,23 @@ public class TipoCambioViewModel : BaseViewModel
     {
         CargarCommand = new Command(async () => await CargarTiposCambio());
         CargarCommand.Execute(null);
-        VolverCommand = new Command(async () =>
-        {
-            await Application.Current.MainPage.Navigation.PopAsync();
-        });
+        VolverCommand = new Command(async () => await VolverAlMenuAsync());
     }
+    private async Task VolverAlMenuAsync()
+    {
+        var rol = SesionActual.Usuario?.Rol;
 
+        if (string.Equals(rol, "Administrador", StringComparison.OrdinalIgnoreCase))
+        {
+            // Menú para admin
+            await Shell.Current.GoToAsync("//MenuAdminPage");
+        }
+        else
+        {
+            // Menú de usuario común (fallback si no hay sesión)
+            await Shell.Current.GoToAsync("//MenuPage");
+        }
+    }
     private async Task CargarTiposCambio()
     {
         try

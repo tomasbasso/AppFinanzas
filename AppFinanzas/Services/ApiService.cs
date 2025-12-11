@@ -9,31 +9,58 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
+#nullable disable
+
 namespace AppFinanzas.Services
 {
     public class ApiService
     {
         private readonly HttpClient _client;
-        private readonly string _baseUrl = "https://localhost:7086/api";
+        private readonly string _baseUrl = "https://localhost:7086/api"; // LOCAL
+        //private readonly string _baseUrl = "http://apifinanzas.runasp.net/api\""; // Render
 
         public ApiService()
         {
-            _client = new HttpClient();
+            // Use AuthHandler so the Authorization header and refresh flow are handled centrally
+            var handler = new AuthHandler(new HttpClientHandler());
+            _client = new HttpClient(handler);
         }
 
-        // Función para agregar el token JWT al header de Authorization
+        // Función para agregar el token JWT al header de Authorization.
+        // Intenta: 1) token en memoria (SesionActual), 2) Preferences (compatibilidad), 3) SecureStorage.
         private void AddAuthHeader()
         {
-            var token = SesionActual.Token ?? Preferences.Default.Get<string>("jwt", null);
+            var token = SesionActual.Token ?? Preferences.Default.Get("jwt", string.Empty);
+
+            if (string.IsNullOrEmpty(token))
+            {
+                try
+                {
+                    token = SecureStorage.GetAsync("jwt").GetAwaiter().GetResult();
+                }
+                catch
+                {
+                    // Ignorar errores
+                }
+            }
 
             if (!string.IsNullOrEmpty(token))
             {
                 if (_client.DefaultRequestHeaders.Contains("Authorization"))
                     _client.DefaultRequestHeaders.Remove("Authorization");
 
-                _client.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Bearer", token);
+                _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
+        }
+
+        // Logout: limpia token y sesión en cliente y almacenamiento local.
+        public async Task LogoutAsync()
+        {
+            try { if (_client.DefaultRequestHeaders.Contains("Authorization")) _client.DefaultRequestHeaders.Remove("Authorization"); } catch { }
+            SesionActual.Token = null;
+            SesionActual.Usuario = null;
+            try { Preferences.Default.Remove("jwt"); } catch { }
+            try { await SecureStorage.SetAsync("jwt", string.Empty); } catch { }
         }
 
         ////////////// LOGIN (no requiere token)
@@ -50,25 +77,58 @@ namespace AppFinanzas.Services
 
             var result = await response.Content.ReadAsStringAsync();
 
-            return JsonSerializer.Deserialize<LoginResponseDto>(result, new JsonSerializerOptions
+            var loginResp = JsonSerializer.Deserialize<LoginResponseDto>(result, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
-            })!;
+            });
+
+            // Persist tokens and set in-memory session if present
+            if (loginResp?.Token != null)
+            {
+                SesionActual.Token = loginResp.Token;
+                try { await SecureStorage.SetAsync("jwt", loginResp.Token); } catch { Preferences.Default.Set("jwt", loginResp.Token); }
+            }
+            if (loginResp?.RefreshToken != null)
+            {
+                try { await SecureStorage.SetAsync("refreshToken", loginResp.RefreshToken); } catch { Preferences.Default.Set("refreshToken", loginResp.RefreshToken); }
+            }
+
+            if (loginResp?.Usuario != null)
+            {
+                SesionActual.Usuario = loginResp.Usuario;
+            }
+
+            return loginResp!;
         }
 
         //////////// CUENTAS BANCARIAS (requieren token)
         public async Task<List<CuentaDto>> GetCuentasAsync()
         {
+            Console.WriteLine("Authorization header:");
+            if (_client.DefaultRequestHeaders.TryGetValues("Authorization", out var headers))
+            {
+                foreach (var header in headers)
+                    Console.WriteLine(header);
+            }
+            else
+            {
+                Console.WriteLine("No se encontró el header Authorization.");
+            }
+
             AddAuthHeader();
 
             var response = await _client.GetAsync($"{_baseUrl}/Cuentas");
 
             if (!response.IsSuccessStatusCode)
-                throw new Exception("Error al obtener cuentas bancarias");
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error al obtener cuentas bancarias. Código: {(int)response.StatusCode} - {response.ReasonPhrase}\nDetalle: {errorContent}");
+            }
 
             var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<List<CuentaDto>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
+
 
         public async Task CrearCuentaAsync(CuentaDto nuevaCuenta)
         {
@@ -156,7 +216,7 @@ namespace AppFinanzas.Services
                 throw new Exception($"Error {(int)response.StatusCode}: {error}");
             }
 
-            // Opcional: podés leer la transacción creada si la necesitas
+            // Opcional: pse puede leer la transacción creada si la necesitas
             var responseContent = await response.Content.ReadAsStringAsync();
             var transaccionCreada = JsonSerializer.Deserialize<TransaccionDto>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
@@ -373,11 +433,10 @@ namespace AppFinanzas.Services
             AddAuthHeader();
 
             var response = await _client.DeleteAsync($"{_baseUrl}/Usuarios/{usuarioId}");
-
             if (!response.IsSuccessStatusCode)
             {
                 var error = await response.Content.ReadAsStringAsync();
-                throw new Exception($"No se pudo eliminar el usuario: {error}");
+                throw new Exception($"No se pudo eliminar el usuario. Código: {(int)response.StatusCode} - {error}");
             }
         }
     }

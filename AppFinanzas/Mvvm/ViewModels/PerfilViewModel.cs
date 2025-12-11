@@ -1,4 +1,5 @@
-﻿using AppFinanzas.Mvvm.ModelsDto;
+﻿using AppFinanzas.Data;
+using AppFinanzas.Mvvm.ModelsDto;
 using AppFinanzas.Services;
 using System.Windows.Input;
 
@@ -22,10 +23,22 @@ namespace AppFinanzas.Mvvm.ViewModels
         {
             CargarPerfilCommand = new Command(async () => await CargarPerfilAsync());
             CargarPerfilCommand.Execute(null);
-            VolverCommand = new Command(async () =>
+            VolverCommand = new Command(async () => await VolverAlMenuAsync());
+        }
+        private async Task VolverAlMenuAsync()
+        {
+            var rol = SesionActual.Usuario?.Rol;
+
+            if (string.Equals(rol, "Administrador", StringComparison.OrdinalIgnoreCase))
             {
-                await Application.Current.MainPage.Navigation.PopAsync();
-            });
+                // Menú para admin
+                await Shell.Current.GoToAsync("//MenuAdminPage");
+            }
+            else
+            {
+                // Menú de usuario común (fallback si no hay sesión)
+                await Shell.Current.GoToAsync("//MenuPage");
+            }
         }
 
         private async Task CargarPerfilAsync()

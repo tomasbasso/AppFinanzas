@@ -8,5 +8,14 @@ public partial class LoginPage : ContentPage
     {
         InitializeComponent();
         BindingContext = new LoginViewModel();
+        SizeChanged += LoginPage_SizeChanged;
+    }
+
+    private void LoginPage_SizeChanged(object? sender, EventArgs e)
+    {
+        if (Height > 0)
+        {
+            CenterContainer.MinimumHeightRequest = Height;
+        }
     }
 }

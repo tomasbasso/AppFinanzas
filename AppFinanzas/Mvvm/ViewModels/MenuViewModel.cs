@@ -11,6 +11,7 @@ namespace AppFinanzas.Mvvm.ViewModels
         public ICommand IrAMetasCommand { get; }
         public ICommand IrATipoCambioCommand { get; }
         public ICommand IrAPerfilCommand { get; }
+        public ICommand IrAConfiguracionCommand { get; }
 
         public MenuViewModel()
         {
@@ -20,6 +21,8 @@ namespace AppFinanzas.Mvvm.ViewModels
             IrAMetasCommand = new Command(async () => await Shell.Current.GoToAsync("MetasAhorroPage"));
             IrATipoCambioCommand = new Command(async () => await Shell.Current.GoToAsync("TipoCambioPage"));
             IrAPerfilCommand = new Command(async () => await Shell.Current.GoToAsync("PerfilPage"));
+            // Use the registered Shell route name. Using the absolute '//' ensures navigation to that route.
+            IrAConfiguracionCommand = new Command(async () => await Shell.Current.GoToAsync("//MenuConfiguracionPage?forAdmin=false"));
         }
     }
 }

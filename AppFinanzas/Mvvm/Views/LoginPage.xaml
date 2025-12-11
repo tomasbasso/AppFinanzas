@@ -5,53 +5,69 @@
              NavigationPage.HasNavigationBar="False"
              BackgroundColor="#25241f">
 
-    <ScrollView>
-        <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Padding="30" Spacing="20">
+    <Grid>
+        <!-- Contenido Principal del Login -->
+        <ScrollView>
+            <Grid x:Name="CenterContainer"
+                  Padding="30"
+                  VerticalOptions="FillAndExpand">
+                <VerticalStackLayout VerticalOptions="Center"
+                                     HorizontalOptions="Center"
+                                     Spacing="20">
 
-            <!-- Icono -->
-            <Image Source="logosinfondo.png"
-                   HeightRequest="300"
-                   WidthRequest="300"
-                   HorizontalOptions="Center" />
+                <!-- Icono -->
+                <Image Source="logosinfondo.png"
+                       HeightRequest="300"
+                       WidthRequest="300"
+                       HorizontalOptions="Center" />
 
-            <!-- Email -->
-            <Entry Placeholder="Email"
-                   Text="{Binding Email}"
-                   BackgroundColor="White"
-                   HeightRequest="50"
-                   PlaceholderColor="Gray"
-                   TextColor="Black" />
+                <!-- Email -->
+                <Entry Placeholder="Email"
+                       Text="{Binding Email}"
+                       BackgroundColor="White"
+                       HeightRequest="50"
+                       PlaceholderColor="Gray"
+                       TextColor="Black" />
 
-            <!-- Contraseña -->
-            <Entry Placeholder="Contraseña"
-                   Text="{Binding Contrasena}"
-                   IsPassword="True"
-                   BackgroundColor="White"
-                   HeightRequest="50"
-                  PlaceholderColor="Gray"
-                   TextColor="Black" />
+                <!-- Contraseña -->
+                <Entry Placeholder="Contraseña"
+                       Text="{Binding Contrasena}"
+                       IsPassword="True"
+                       BackgroundColor="White"
+                       HeightRequest="50"
+                      PlaceholderColor="Gray"
+                       TextColor="Black" />
 
-            <!-- Botón -->
-            <Button Text="Iniciar sesión"
-                    Command="{Binding LoginCommand}"
+                <!-- Botón -->
+                <Button Text="Iniciar sesión"
+                        Command="{Binding LoginCommand}"
+                        IsEnabled="{Binding IsNotLoading}"
+                        BackgroundColor="#caa755"
+                        TextColor="#504734"
+                        FontAttributes="Bold"
+                        CornerRadius="10"
+                        HeightRequest="50" />
+
+                <!-- Enlaces secundarios -->
+                <Label Text="Olvido su contraseña?"
+                       HorizontalOptions="Center"
+                       FontSize="14"
+                       TextColor="Gray" />
+
+                <Button Text="¿No tenés cuenta? Registrate"
+                    Command="{Binding IrARegistroCommand}"
+                    IsEnabled="{Binding IsNotLoading}"
                     BackgroundColor="#caa755"
-                    TextColor="#504734"
-                    FontAttributes="Bold"
-                    CornerRadius="10"
-                    HeightRequest="50" />
+                    TextColor="Black"
+                    Margin="0,10"/>
 
-            <!-- Enlaces secundarios -->
-            <Label Text="Olvido su contraseña?"
-                   HorizontalOptions="Center"
-                   FontSize="14"
-                   TextColor="Gray" />
+            </VerticalStackLayout>
+            </Grid>
+        </ScrollView>
 
-            <Button Text="¿No tenés cuenta? Registrate"
-                Command="{Binding IrARegistroCommand}"
-                BackgroundColor="#caa755"
-                TextColor="Black"
-                Margin="0,10"/>
-
-        </VerticalStackLayout>
-    </ScrollView>
+        <!-- Overlay de Carga -->
+        <Grid IsVisible="{Binding IsLoading}" BackgroundColor="#80000000">
+            <ActivityIndicator IsRunning="True" Color="#caa755" HorizontalOptions="Center" VerticalOptions="Center" />
+        </Grid>
+    </Grid>
 </ContentPage>

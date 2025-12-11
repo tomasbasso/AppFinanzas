@@ -2,13 +2,16 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AppFinanzas.Mvvm.Views.MenuPage"
-              NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasNavigationBar="False"
              BackgroundColor="#25241f">
 
     <ScrollView>
-        <VerticalStackLayout Padding="30" Spacing="30"
-                             HorizontalOptions="Center"
-                             VerticalOptions="Center">
+        <Grid x:Name="CenterContainer"
+              Padding="30"
+              VerticalOptions="FillAndExpand">
+            <VerticalStackLayout Spacing="30"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
 
             <!-- Logo -->
             <Image Source="logosinfondo.png"
@@ -92,7 +95,18 @@
                         <Label Text="Perfil" Grid.Column="1" FontSize="18" HorizontalOptions="Center" TextColor="black"/>
                     </Grid>
                 </Frame>
+                <!-- Configuración (no persistente) -->
+                <Frame BackgroundColor="#caa755" CornerRadius="8" BorderColor="#caa755" HasShadow="False" Padding="10">
+                    <Grid ColumnDefinitions="30,*,Auto">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding IrAConfiguracionCommand}" />
+                        </Grid.GestureRecognizers>
+                        <Image Source="config.png" WidthRequest="24" HeightRequest="24"/>
+                        <Label Text="Configuración" Grid.Column="1" FontSize="18" HorizontalOptions="Center" TextColor="black"/>
+                    </Grid>
+                </Frame>
             </VerticalStackLayout>
-        </VerticalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
     </ScrollView>
 </ContentPage>

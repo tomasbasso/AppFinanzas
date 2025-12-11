@@ -7,10 +7,6 @@
              Title="Nueva Meta de Ahorro"
              BackgroundColor="#23221C">
 
-    <ContentPage.BindingContext>
-        <vm:NuevaMetaAhorroViewModel />
-    </ContentPage.BindingContext>
-
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="18">
 

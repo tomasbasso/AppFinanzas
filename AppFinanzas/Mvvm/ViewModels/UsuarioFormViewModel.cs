@@ -1,6 +1,7 @@
 ﻿using AppFinanzas.Mvvm.ModelsDto;
 using AppFinanzas.Services;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace AppFinanzas.Mvvm.ViewModels
@@ -9,62 +10,101 @@ namespace AppFinanzas.Mvvm.ViewModels
     {
         private readonly ApiService _apiService = new();
 
-        // Propiedades bindables
-        public int UsuarioId { get; set; }
-        public string Nombre { get; set; }
-        public string Email { get; set; }
-        public string Rol { get; set; }
-        public string Contrasena { get; set; }
+        // === Campos internos + SetProperty para notificación ===
+        private int _usuarioId;
+        public int UsuarioId
+        {
+            get => _usuarioId;
+            set => SetProperty(ref _usuarioId, value);
+        }
 
-        public bool EsEdicion { get; set; } // true=editar, false=crear
+        private string _nombre;
+        public string Nombre
+        {
+            get => _nombre;
+            set => SetProperty(ref _nombre, value);
+        }
 
+        private string _email;
+        public string Email
+        {
+            get => _email;
+            set => SetProperty(ref _email, value);
+        }
 
-        // Propiedades de ayuda
-        public string TituloPagina => EsEdicion ? "Editar Usuario" : "Nuevo Usuario";
-        public string TextoBotonGuardar => EsEdicion ? "Guardar Cambios" : "Crear Usuario";
-        public string PlaceholderContrasena => EsEdicion ? "Nueva Contraseña (opcional)" : "Contraseña";
+        private string _contrasena;
+        public string Contrasena
+        {
+            get => _contrasena;
+            set => SetProperty(ref _contrasena, value);
+        }
 
+        private string? _rolSeleccionado;
+        public string? RolSeleccionado
+        {
+            get => _rolSeleccionado;
+            set => SetProperty(ref _rolSeleccionado, value);
+        }
+
+        private bool _esEdicion;
+        public bool EsEdicion
+        {
+            get => _esEdicion;
+            set => SetProperty(ref _esEdicion, value);
+        }
+
+        // === Para el Picker ===
+        public ObservableCollection<string> Roles { get; } =
+            new ObservableCollection<string> { "Cliente", "Administrador" };
+
+        // === Props calculadas ===
+        public string TituloPagina =>
+            EsEdicion ? "Editar Usuario" : "Nuevo Usuario";
+        public string TextoBotonGuardar =>
+            EsEdicion ? "Guardar Cambios" : "Crear Usuario";
+        public string PlaceholderContrasena =>
+            EsEdicion
+                ? "Nueva Contraseña (opcional)"
+                : "Contraseña";
+
+        // === Comandos ===
         public ICommand GuardarCommand { get; }
         public ICommand CancelarCommand { get; }
 
         public UsuarioFormViewModel()
         {
             GuardarCommand = new Command(async () => await GuardarUsuario());
-            CancelarCommand = new Command(async () => await Cancelar());
-            RolSeleccionado = null;
-        }
-        public ObservableCollection<string> Roles { get; set; } = new ObservableCollection<string> { "Cliente", "Administrador" };
-
-        private string _rolSeleccionado;
-        public string RolSeleccionado
-        {
-            get => _rolSeleccionado;
-            set
-            {
-                SetProperty(ref _rolSeleccionado, value);
-            }
-
+            CancelarCommand = new Command(async () => await Shell.Current.GoToAsync(".."));
+            // inicializamos en modo "nuevo"
+            EsEdicion = false;
         }
 
-        // Llamar este método desde el constructor de la Page para editar:
+        // === Llenar campos al editar ===
         public void CargarUsuario(UsuarioDto usuario)
         {
             UsuarioId = usuario.UsuarioId;
             Nombre = usuario.Nombre;
             Email = usuario.Email;
-            Rol = usuario.Rol;
+            RolSeleccionado = usuario.Rol;
+            Contrasena = string.Empty;
             EsEdicion = true;
-            OnPropertyChanged(nameof(EsEdicion));
+
+            // disparar notificaciones de props derivadas
             OnPropertyChanged(nameof(TituloPagina));
             OnPropertyChanged(nameof(TextoBotonGuardar));
             OnPropertyChanged(nameof(PlaceholderContrasena));
-            OnPropertyChanged(nameof(RolSeleccionado));
         }
 
-        // Para crear, EsEdicion = false por default
-
+        // === Lógica de guardar ===
         private async Task GuardarUsuario()
         {
+            if (string.IsNullOrEmpty(RolSeleccionado))
+            {
+                await Shell.Current.DisplayAlert(
+                    "Error", "Debés seleccionar un rol.", "OK");
+                return;
+            }
+
             try
             {
                 if (EsEdicion)
@@ -74,15 +114,13 @@ namespace AppFinanzas.Mvvm.ViewModels
                         UsuarioId = UsuarioId,
                         Nombre = Nombre,
                         Rol = RolSeleccionado,
-                        Contrasena = string.IsNullOrWhiteSpace(Contrasena) ? null : Contrasena
+                        Contrasena = string.IsNullOrWhiteSpace(Contrasena)
+                                      ? null
+                                      : Contrasena
                     };
-                    if (string.IsNullOrEmpty(RolSeleccionado))
-                    {
-                        await App.Current.MainPage.DisplayAlert("Error", "Debés seleccionar un rol.", "OK");
-                        return;
-                    }
                     await _apiService.ActualizarUsuarioAsync(UsuarioId, dto);
-                    await App.Current.MainPage.DisplayAlert("Listo", "Usuario editado correctamente", "OK");
+                    await Shell.Current.DisplayAlert(
+                        "Listo", "Usuario editado correctamente", "OK");
                 }
                 else
                 {
@@ -94,20 +132,17 @@ namespace AppFinanzas.Mvvm.ViewModels
                         Rol = RolSeleccionado
                     };
                     await _apiService.CrearUsuarioAsync(dto);
-                    await App.Current.MainPage.DisplayAlert("Listo", "Usuario creado correctamente", "OK");
+                    await Shell.Current.DisplayAlert(
+                        "Listo", "Usuario creado correctamente", "OK");
                 }
-                // Volver (ejemplo: Shell navigation)
+
+                // Volver atrás
                 await Shell.Current.GoToAsync("..");
             }
             catch (Exception ex)
             {
-                await App.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
+                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
             }
-        }
-
-        private async Task Cancelar()
-        {
-            await Shell.Current.GoToAsync("..");
         }
     }
 }

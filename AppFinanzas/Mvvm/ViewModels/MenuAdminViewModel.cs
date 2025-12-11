@@ -22,15 +22,15 @@ namespace AppFinanzas.Mvvm.ViewModels
         public MenuAdminViewModel()
         {
             IrACuentasCommand = new Command(async () => await Shell.Current.GoToAsync("//CuentasPage"));
-            IrATransaccionesCommand = new Command(async () => await Shell.Current.GoToAsync("//TransaccionesPage"));
-            IrAPresupuestosCommand = new Command(async () => await Shell.Current.GoToAsync("//PresupuestosPage"));
-            IrAMetasCommand = new Command(async () => await Shell.Current.GoToAsync("//MetasAhorroPage"));
+            IrATransaccionesCommand = new Command(async () => await Shell.Current.GoToAsync("TransaccionesPage"));
+            IrAPresupuestosCommand = new Command(async () => await Shell.Current.GoToAsync("PresupuestosPage"));
+            IrAMetasCommand = new Command(async () => await Shell.Current.GoToAsync("MetasAhorroPage"));
             IrATipoCambioCommand = new Command(async () => await Shell.Current.GoToAsync("TipoCambioPage"));
-            IrAPerfilCommand = new Command(async () => await Shell.Current.GoToAsync("//PerfilPage"));
+            IrAPerfilCommand = new Command(async () => await Shell.Current.GoToAsync("PerfilPage"));
             //ADMINS
-            IrAGestionUsuariosCommand = new Command(async () => await Shell.Current.GoToAsync("//GestionUsuariosPage"));
-            IrAReportesCommand = new Command(async () => await Shell.Current.GoToAsync("//ReportesPage"));
-            IrAConfiguracionCommand = new Command(async () => await Shell.Current.GoToAsync("//ConfiguracionPage"));
+            IrAGestionUsuariosCommand = new Command(async () => await Application.Current.MainPage.Navigation.PushAsync(new GestionUsuariosPage()));
+         IrAReportesCommand = new Command(async () => await App.Current.MainPage.DisplayAlert("Próximamente", "Esta funcionalidad estará disponible en futuras actualizaciones.", "Aceptar"));
+            IrAConfiguracionCommand = new Command(async () => await Shell.Current.GoToAsync("//MenuConfiguracionPage?forAdmin=true"));
         }
     }
 }

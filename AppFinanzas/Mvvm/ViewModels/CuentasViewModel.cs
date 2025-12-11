@@ -1,4 +1,5 @@
-﻿using AppFinanzas.Mvvm.ModelsDto;
+﻿using AppFinanzas.Data;
+using AppFinanzas.Mvvm.ModelsDto;
 using AppFinanzas.Mvvm.Views;
 using AppFinanzas.Services;
 using System.Collections.ObjectModel;
@@ -29,12 +30,23 @@ namespace AppFinanzas.Mvvm.ViewModels
             EliminarCommand = new Command<CuentaDto>(async (cuenta) => await EliminarCuenta(cuenta));
 
             CargarCommand.Execute(null);
-            VolverCommand = new Command(async () =>
-            {
-                await Application.Current.MainPage.Navigation.PopAsync();
-            });
+            VolverCommand = new Command(async () => await VolverAlMenuAsync());
         }
+        private async Task VolverAlMenuAsync()
+        {
+            var rol = SesionActual.Usuario?.Rol;
 
+            if (string.Equals(rol, "Administrador", StringComparison.OrdinalIgnoreCase))
+            {
+                // Menú para admin
+                await Shell.Current.GoToAsync("//MenuAdminPage");
+            }
+            else
+            {
+                // Menú de usuario común (fallback si no hay sesión)
+                await Shell.Current.GoToAsync("//MenuPage");
+            }
+        }
         private async Task CargarCuentasAsync()
         {
             try
