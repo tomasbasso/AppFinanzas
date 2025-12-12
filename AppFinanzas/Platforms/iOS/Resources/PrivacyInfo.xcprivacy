@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!--
-This is the minimum required version of the Apple Privacy Manifest for .NET MAUI apps.
-The contents below are needed because of APIs that are used in the .NET framework and .NET MAUI SDK.
+Este es el manifiesto de privacidad minimo pedido por Apple para apps .NET MAUI.
+Se necesita por las APIs que usa el framework y el SDK de .NET MAUI.
 
-You are responsible for adding extra entries as needed for your application.
+A medida que tu app use mas cosas, agrega entradas aca.
 
-More information: https://aka.ms/maui-privacy-manifest
+Mas info: https://aka.ms/maui-privacy-manifest
 -->
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -37,15 +37,15 @@ More information: https://aka.ms/maui-privacy-manifest
             </array>
         </dict>
         <!--
-            The entry below is only needed when you're using the Preferences API in your app.
-        <dict>
-            <key>NSPrivacyAccessedAPIType</key>
-            <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
-            <key>NSPrivacyAccessedAPITypeReasons</key>
-            <array>
-                <string>CA92.1</string>
-            </array>
-        </dict> -->
+Este es el manifiesto de privacidad minimo pedido por Apple para apps .NET MAUI.
+Se necesita por las APIs que usa el framework y el SDK de .NET MAUI.
+
+A medida que tu app use mas cosas, agrega entradas aca.
+
+Mas info: https://aka.ms/maui-privacy-manifest
+-->
     </array>
 </dict>
 </plist>
+
+

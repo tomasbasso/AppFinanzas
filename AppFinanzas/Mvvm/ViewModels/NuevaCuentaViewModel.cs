@@ -44,7 +44,8 @@ namespace AppFinanzas.Mvvm.ViewModels
                 Nombre = _cuentaExistente.Nombre;
                 Banco = _cuentaExistente.Banco;
                 TipoCuenta = _cuentaExistente.TipoCuenta;
-                Saldo = _cuentaExistente.Saldo.ToString(CultureInfo.InvariantCulture);
+                var saldoBase = _cuentaExistente.SaldoActual != 0 ? _cuentaExistente.SaldoActual : _cuentaExistente.Saldo;
+                Saldo = saldoBase.ToString(CultureInfo.InvariantCulture);
             }
         }
 
@@ -71,7 +72,21 @@ namespace AppFinanzas.Mvvm.ViewModels
                 return;
             }
 
-            if (!decimal.TryParse(Saldo, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal saldoDecimal))
+            var saldoTexto = (Saldo ?? string.Empty).Trim()
+                                                      .Replace(" ", string.Empty)
+                                                      .Replace("$", string.Empty)
+                                                      .Replace("€", string.Empty)
+                                                      .Replace(",", ".");
+
+            var lastDot = saldoTexto.LastIndexOf('.');
+            if (lastDot > -1)
+            {
+                var entero = saldoTexto[..lastDot].Replace(".", string.Empty);
+                var decimales = saldoTexto[(lastDot + 1)..].Replace(".", string.Empty);
+                saldoTexto = $"{entero}.{decimales}";
+            }
+
+            if (!decimal.TryParse(saldoTexto, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal saldoDecimal))
             {
                 await Shell.Current.DisplayAlert("Error", "Saldo invalido.", "OK");
                 return;
@@ -97,6 +112,7 @@ namespace AppFinanzas.Mvvm.ViewModels
                 Banco = Banco.Trim(),
                 TipoCuenta = TipoCuenta,
                 Saldo = saldoDecimal,
+                SaldoActual = saldoDecimal,
                 UsuarioId = SesionActual.Usuario.UsuarioId
             };
 

@@ -146,6 +146,13 @@ namespace AppFinanzas.Mvvm.ViewModels
                 CategoriasGasto = categoriasGastoTask.Result;
                 CategoriasIngreso = categoriasIngresoTask.Result;
 
+                if (CategoriasGasto.Count == 0 && CategoriasIngreso.Count == 0)
+                    await Shell.Current.DisplayAlert("Aviso", "La API no devolvió categorías de gasto ni de ingreso. Verifica que existan en el servidor.", "OK");
+                else if (EsGasto && CategoriasGasto.Count == 0)
+                    await Shell.Current.DisplayAlert("Aviso", "La API no devolvió categorías de gasto. Verifica que existan en el servidor.", "OK");
+                else if (EsIngreso && CategoriasIngreso.Count == 0)
+                    await Shell.Current.DisplayAlert("Aviso", "La API no devolvió categorías de ingreso. Verifica que existan en el servidor.", "OK");
+
                 if (_transaccionExistente == null)
                 {
                     CuentaSeleccionada = Cuentas.FirstOrDefault();

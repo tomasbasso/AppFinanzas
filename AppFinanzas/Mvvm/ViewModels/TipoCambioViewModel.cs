@@ -24,12 +24,12 @@ public class TipoCambioViewModel : BaseViewModel
 
         if (string.Equals(rol, "Administrador", StringComparison.OrdinalIgnoreCase))
         {
-            // Menú para admin
+            // Menu para admin
             await Shell.Current.GoToAsync("//MenuAdminPage");
         }
         else
         {
-            // Menú de usuario común (fallback si no hay sesión)
+            // Menu de usuario (si no hay sesion va aca)
             await Shell.Current.GoToAsync("//MenuPage");
         }
     }

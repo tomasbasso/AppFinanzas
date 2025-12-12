@@ -9,7 +9,7 @@ namespace AppFinanzas
         public App()
         {
             InitializeComponent();
-            // Intentar cargar token seguro al inicio (SecureStorage) y fallback a Preferences
+            
             try
             {
                 var token = SecureStorage.GetAsync("jwt").GetAwaiter().GetResult();

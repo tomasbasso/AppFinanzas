@@ -30,7 +30,7 @@ namespace AppFinanzas.Mvvm.ViewModels
             set => SetProperty(ref _email, value);
         }
 
-        // esto ya lo tenías bien:
+      
         private string? _rolSeleccionado;
         public string? RolSeleccionado
         {
@@ -38,7 +38,7 @@ namespace AppFinanzas.Mvvm.ViewModels
             set => SetProperty(ref _rolSeleccionado, value);
         }
 
-        // y lo mismo para la contraseña si querés:
+        
         private string _contrasena;
         public string Contrasena
         {
@@ -114,3 +114,5 @@ namespace AppFinanzas.Mvvm.ViewModels
         }
     }
 }
+
+

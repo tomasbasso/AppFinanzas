@@ -1,4 +1,4 @@
-using AppFinanzas.Mvvm.ViewModels;
+﻿using AppFinanzas.Mvvm.ViewModels;
 using AppFinanzas.Services;
 using Microsoft.Maui;
 using Microsoft.Maui.ApplicationModel;
@@ -12,7 +12,7 @@ public partial class MenuAdminPage : ContentPage
 	{
         InitializeComponent();
         BindingContext = new MenuAdminViewModel();
-        // Apply initial admin menu theme color; subscriptions moved to lifecycle methods
+        // Pongo el color del menu de admin al entrar; las suscripciones van en los eventos de vida
         this.BackgroundColor = ThemeService.AdminMenuColor;
     }
 
@@ -58,9 +58,9 @@ public partial class MenuAdminPage : ContentPage
     {
         base.OnAppearing();
         System.Diagnostics.Debug.WriteLine("MenuAdminPage: OnAppearing - subscribing to OnAdminThemeChanged");
-        ThemeService.OnAdminThemeChanged -= ThemeService_OnThemeChanged; // ensure not double-subscribed
+        ThemeService.OnAdminThemeChanged -= ThemeService_OnThemeChanged; // para no suscribir dos veces
         ThemeService.OnAdminThemeChanged += ThemeService_OnThemeChanged;
-        // Ensure UI reflects the current admin color in case it changed while this page was not active
+        // Me aseguro de mostrar el color actual por si cambio mientras esta pagina no estaba activa
         var current = ThemeService.AdminMenuColor;
         System.Diagnostics.Debug.WriteLine($"MenuAdminPage: OnAppearing - animating to current AdminMenuColor {current}");
         MainThread.BeginInvokeOnMainThread(() =>

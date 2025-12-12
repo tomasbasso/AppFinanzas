@@ -1,4 +1,4 @@
-using AppFinanzas.Mvvm.Views;
+﻿using AppFinanzas.Mvvm.Views;
 using AppFinanzas.Services;
 using Microsoft.Maui.Controls;
 using System.Threading.Tasks;
@@ -28,7 +28,7 @@ namespace AppFinanzas.Mvvm.ViewModels
             IrAMetasCommand = new Command(async () => await Shell.Current.GoToAsync("MetasAhorroPage"));
             IrATipoCambioCommand = new Command(async () => await Shell.Current.GoToAsync("TipoCambioPage"));
             IrAPerfilCommand = new Command(async () => await Shell.Current.GoToAsync("PerfilPage"));
-            // Use the registered Shell route name. Using the absolute '//' ensures navigation to that route.
+            
             IrAConfiguracionCommand = new Command(async () => await Shell.Current.GoToAsync("//MenuConfiguracionPage?forAdmin=false"));
             LogoutCommand = new Command(async () => await LogoutAsync(), () => !_isLoggingOut);
         }
@@ -54,3 +54,4 @@ namespace AppFinanzas.Mvvm.ViewModels
         }
     }
 }
+

@@ -2,29 +2,30 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AppFinanzas.Mvvm.Views.PerfilPage"
-              NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasNavigationBar="False"
              Title="Mi Perfil"
-             BackgroundColor="#FAFAF8">
+             BackgroundColor="#23221C">
     <ScrollView>
-    <StackLayout Padding="20" Spacing="15">
+    <StackLayout Padding="20" Spacing="18">
         <Label Text="Perfil del Usuario"
                FontSize="24"
                FontAttributes="Bold"
-               HorizontalOptions="Center" />
+               HorizontalOptions="Center"
+               TextColor="#caa755" />
         <Button Text="Volver"  Command="{Binding VolverCommand}"
-             BackgroundColor="LightGray" TextColor="Black"
+             BackgroundColor="#bdbdbd" TextColor="Black"
              CornerRadius="10" HeightRequest="50" />
 
-        <Frame CornerRadius="10" BackgroundColor="White" Padding="15" HasShadow="True">
+        <Frame CornerRadius="10" BackgroundColor="#292820" Padding="15" HasShadow="True">
             <VerticalStackLayout Spacing="10">
-                <Label Text="Nombre" FontAttributes="Bold" />
-                <Label Text="{Binding Usuario.Nombre}" />
+                <Label Text="Nombre" FontAttributes="Bold" TextColor="#caa755"/>
+                <Label Text="{Binding Usuario.Nombre}" TextColor="White"/>
 
-                <Label Text="Email" FontAttributes="Bold" />
-                <Label Text="{Binding Usuario.Email}" />
+                <Label Text="Email" FontAttributes="Bold" TextColor="#caa755"/>
+                <Label Text="{Binding Usuario.Email}" TextColor="White"/>
 
-                <Label Text="Rol" FontAttributes="Bold" />
-                <Label Text="{Binding Usuario.Rol}" />
+                <Label Text="Rol" FontAttributes="Bold" TextColor="#caa755"/>
+                <Label Text="{Binding Usuario.Rol}" TextColor="White"/>
             </VerticalStackLayout>
         </Frame>
     </StackLayout>

@@ -31,9 +31,7 @@
         <Label x:Name="SelectedColorLabel" Text="Selecciona un color" HorizontalOptions="Center" />
 
         <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
-            <Button Text="Aplicar" Clicked="OnApplyClicked" />
-            <Button Text="Cancelar" Clicked="OnCancelClicked" />
-            <Button Text="Aplicar" Command="{Binding ApplyColorCommand}" />
+            <Button Text="Aplicar" Command="{Binding ApplyCommand}" />
             <Button Text="Cancelar" Command="{Binding CancelCommand}" />
         </HorizontalStackLayout>
     </VerticalStackLayout>

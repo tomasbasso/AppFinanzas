@@ -9,7 +9,7 @@ namespace AppFinanzas.Mvvm.ModelsDto
     public class TransaccionDto
     {
         public int TransaccionId { get; set; }
-        public string Tipo { get; set; } // "Ingreso" o "Gasto"
+        public string Tipo { get; set; } // Puede ser "Ingreso" o "Gasto"
         public decimal Monto { get; set; }
         public string Descripcion { get; set; }
         public DateTime Fecha { get; set; }

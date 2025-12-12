@@ -1,4 +1,4 @@
-using AppFinanzas.Mvvm.Views;
+﻿using AppFinanzas.Mvvm.Views;
 using AppFinanzas.Services;
 using Microsoft.Maui.Controls;
 using System.Threading.Tasks;
@@ -18,7 +18,7 @@ namespace AppFinanzas.Mvvm.ViewModels
         public ICommand IrATipoCambioCommand { get; }
         public ICommand IrAPerfilCommand { get; }
 
-        // Exclusivas admin
+        // Opciones solo para admin
         public ICommand IrAGestionUsuariosCommand { get; }
         public ICommand IrAReportesCommand { get; }
         public ICommand IrAConfiguracionCommand { get; }
@@ -32,9 +32,9 @@ namespace AppFinanzas.Mvvm.ViewModels
             IrAMetasCommand = new Command(async () => await Shell.Current.GoToAsync("MetasAhorroPage"));
             IrATipoCambioCommand = new Command(async () => await Shell.Current.GoToAsync("TipoCambioPage"));
             IrAPerfilCommand = new Command(async () => await Shell.Current.GoToAsync("PerfilPage"));
-            // ADMINS
+            // para admin
             IrAGestionUsuariosCommand = new Command(async () => await Application.Current.MainPage.Navigation.PushAsync(new GestionUsuariosPage()));
-            IrAReportesCommand = new Command(async () => await App.Current.MainPage.DisplayAlert("Próximamente", "Esta funcionalidad estará disponible en futuras actualizaciones.", "Aceptar"));
+            IrAReportesCommand = new Command(async () => await App.Current.MainPage.DisplayAlert("PrÃ³ximamente", "Esta funcionalidad estarÃ¡ disponible en futuras actualizaciones.", "Aceptar"));
             IrAConfiguracionCommand = new Command(async () => await Shell.Current.GoToAsync("//MenuConfiguracionPage?forAdmin=true"));
             LogoutCommand = new Command(async () => await LogoutAsync(), () => !_isLoggingOut);
         }
@@ -60,3 +60,4 @@ namespace AppFinanzas.Mvvm.ViewModels
         }
     }
 }
+

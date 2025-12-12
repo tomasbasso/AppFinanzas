@@ -5,12 +5,13 @@ namespace AppFinanzas
 {
     public class Program
     {
-        // This is the main entry point of the application.
+        // Punto de entrada principal de la app.
         static void Main(string[] args)
         {
-            // if you want to use a different Application Delegate class from "AppDelegate"
-            // you can specify it here.
+            // si queres usar otra clase Application Delegate distinta de AppDelegate
+            // indicalo aca.
             UIApplication.Main(args, null, typeof(AppDelegate));
         }
     }
 }
+

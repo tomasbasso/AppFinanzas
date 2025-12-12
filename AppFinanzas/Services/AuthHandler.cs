@@ -1,4 +1,4 @@
-using AppFinanzas.Data;
+﻿using AppFinanzas.Data;
 using AppFinanzas.Mvvm.ModelsDto;
 using Microsoft.Maui.Storage;
 using System;
@@ -20,7 +20,7 @@ namespace AppFinanzas.Services
 
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            // Agregar header Authorization si existe token
+            // Agrego el header Authorization si tengo token
             var token = SesionActual.Token ?? Preferences.Default.Get("jwt", string.Empty);
             if (!string.IsNullOrEmpty(token))
             {
@@ -31,13 +31,13 @@ namespace AppFinanzas.Services
 
             if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
             {
-                // Intentar refrescar token
+                // Intento refrescar el token
                 var refresh = Preferences.Default.Get("refreshToken", string.Empty);
                 try
                 {
                     if (string.IsNullOrEmpty(refresh))
                     {
-                        // intentar cargar de SecureStorage
+                        // si no hay, pruebo leerlo de SecureStorage
                         refresh = SecureStorage.GetAsync("refreshToken").GetAwaiter().GetResult();
                     }
                 }
@@ -48,12 +48,12 @@ namespace AppFinanzas.Services
                     var refreshed = await TryRefreshTokenAsync(refresh);
                     if (refreshed)
                     {
-                        // Reintentar la petición original con nuevo token
+                        // Vuelvo a mandar la request con el token nuevo
                         var newToken = SesionActual.Token ?? Preferences.Default.Get("jwt", string.Empty);
                         if (!string.IsNullOrEmpty(newToken))
                         {
                             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", newToken);
-                            // Clonar la request original (simple approach: create new request with same content)
+                            // Clono la request con el mismo contenido
                             var newRequest = await CloneHttpRequestMessageAsync(request);
                             newRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", newToken);
                             return await base.SendAsync(newRequest, cancellationToken);
@@ -100,7 +100,7 @@ namespace AppFinanzas.Services
         {
             var clone = new HttpRequestMessage(req.Method, req.RequestUri);
 
-            // Copy the request's content (via a MemoryStream) into the cloned object
+            // Copio el body con un MemoryStream para la request clonada
             if (req.Content != null)
             {
                 var ms = new System.IO.MemoryStream();
@@ -108,7 +108,7 @@ namespace AppFinanzas.Services
                 ms.Position = 0;
                 clone.Content = new StreamContent(ms);
 
-                // Copy the content headers
+                // Copio los headers del contenido
                 if (req.Content.Headers != null)
                 {
                     foreach (var h in req.Content.Headers)
@@ -116,7 +116,7 @@ namespace AppFinanzas.Services
                 }
             }
 
-            // Copy the request headers
+            // Copio los headers de la request
             foreach (var header in req.Headers)
                 clone.Headers.TryAddWithoutValidation(header.Key, header.Value);
 
@@ -125,3 +125,4 @@ namespace AppFinanzas.Services
         }
     }
 }
+

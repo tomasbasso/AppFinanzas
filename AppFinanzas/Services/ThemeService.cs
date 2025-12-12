@@ -1,4 +1,4 @@
-using Microsoft.Maui.Graphics;
+﻿using Microsoft.Maui.Graphics;
 using System;
 using System.Diagnostics;
 
@@ -6,8 +6,8 @@ namespace AppFinanzas.Services
 {
     public static class ThemeService
     {
-    // Default restored to original dark background
-    private static Color _primaryMenuColor = Color.FromArgb("#25241f");
+        // Color base que uso en el menu principal (oscuro por defecto)
+        private static Color _primaryMenuColor = Color.FromArgb("#25241f");
         public static Color PrimaryMenuColor
         {
             get => _primaryMenuColor;
@@ -23,7 +23,7 @@ namespace AppFinanzas.Services
 
         public static event EventHandler? OnThemeChanged;
 
-        // Color específico para el menú de administrador (no afecta al menú principal)
+        // Color aparte para el menu de admin; el menu comun queda igual
         private static Color _adminMenuColor = Color.FromArgb("#25241f");
         public static Color AdminMenuColor
         {
@@ -49,3 +49,6 @@ namespace AppFinanzas.Services
         public static event EventHandler? OnAdminThemeChanged;
     }
 }
+
+
+

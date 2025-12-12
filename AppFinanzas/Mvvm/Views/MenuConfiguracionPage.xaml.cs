@@ -1,4 +1,4 @@
-using AppFinanzas.Services;
+﻿using AppFinanzas.Services;
 using Microsoft.Maui;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Graphics;
@@ -25,7 +25,7 @@ namespace AppFinanzas.Mvvm.Views
             }
         }
 
-        // Shell query parameter to indicate whether the configuration applies to admin menu
+        // Parametro para avisar si se configura el menu de admin
         private string? _forAdmin;
         public string? ForAdmin
         {
@@ -36,7 +36,7 @@ namespace AppFinanzas.Mvvm.Views
                 if (BindingContext is AppFinanzas.Mvvm.ViewModels.MenuConfiguracionViewModel vm)
                 {
                     vm.ForAdmin = bool.TryParse(value, out var b) && b;
-                    // make initial selected color reflect admin mode
+                    // Pongo el color inicial segun si es para admin
                     if (vm.ForAdmin)
                     {
                         vm.SelectedColor = ThemeService.AdminMenuColor;
@@ -86,3 +86,5 @@ namespace AppFinanzas.Mvvm.Views
         }
     }
 }
+
+

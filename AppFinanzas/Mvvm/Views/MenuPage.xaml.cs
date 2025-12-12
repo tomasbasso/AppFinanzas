@@ -1,4 +1,4 @@
-using AppFinanzas.Mvvm.ViewModels;
+﻿using AppFinanzas.Mvvm.ViewModels;
 using AppFinanzas.Services;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
@@ -12,7 +12,7 @@ namespace AppFinanzas.Mvvm.Views
         {
             InitializeComponent();
             BindingContext = new MenuViewModel();
-            // Set initial background from ThemeService and subscribe to changes
+            // Pongo el fondo inicial desde ThemeService y me suscribo a cambios
             this.BackgroundColor = ThemeService.PrimaryMenuColor;
             ThemeService.OnThemeChanged += ThemeService_OnThemeChanged;
             SizeChanged += MenuPage_SizeChanged;
@@ -20,8 +20,8 @@ namespace AppFinanzas.Mvvm.Views
 
         private void MenuPage_SizeChanged(object? sender, EventArgs e)
         {
-            // Force the ScrollView container to be at least as tall as the page
-            // so the inner stack can use Center alignment when there's extra space.
+            // Hago que el ScrollView mida al menos lo mismo que la pagina
+            // Asi el contenido queda centrado si sobra espacio.
             if (Height > 0)
             {
                 CenterContainer.MinimumHeightRequest = Height;
@@ -30,7 +30,7 @@ namespace AppFinanzas.Mvvm.Views
 
         private void ThemeService_OnThemeChanged(object? sender, EventArgs e)
         {
-            // Animate the background color transition on the UI thread
+            // Animo el cambio de color en el hilo de UI
             var target = ThemeService.PrimaryMenuColor;
             MainThread.BeginInvokeOnMainThread(() =>
             {
@@ -55,7 +55,7 @@ namespace AppFinanzas.Mvvm.Views
             }
             catch
             {
-                // Fallback: set immediately if animation fails for any reason
+                // Si la animacion falla, pongo el color directo
                 this.BackgroundColor = toColor;
             }
         }
@@ -67,3 +67,4 @@ namespace AppFinanzas.Mvvm.Views
         }
     }
 }
+

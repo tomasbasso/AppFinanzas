@@ -1,4 +1,4 @@
-using AppFinanzas.Services;
+﻿using AppFinanzas.Services;
 using Microsoft.Maui.Graphics;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
@@ -27,7 +27,7 @@ namespace AppFinanzas.Mvvm.ViewModels
             {
                 if (SetProperty(ref _selectedColor, value))
                 {
-                    // Preview immediately when selection changes
+                    // Muestro el color apenas cambia la seleccion
                     if (value != null)
                     {
                         if (ForAdmin)
@@ -54,7 +54,7 @@ namespace AppFinanzas.Mvvm.ViewModels
         {
             _originalColor = ThemeService.PrimaryMenuColor;
             _originalAdminColor = ThemeService.AdminMenuColor;
-            // default selected color reflects whether we're editing admin or primary
+            // El color inicial depende si estoy tocando el menu de admin o el principal
             _selectedColor = ThemeService.PrimaryMenuColor;
             ApplyCommand = new Command(async () => await ExecuteApply());
             CancelCommand = new Command(async () => await ExecuteCancel());
@@ -62,14 +62,14 @@ namespace AppFinanzas.Mvvm.ViewModels
 
         private async Task ExecuteApply()
         {
-            // selection already previewed; navigate back to the appropriate menu
+            // cambio al menu que corresponda
             var route = ForAdmin ? "//MenuAdminPage" : "//MenuPage";
             await Shell.Current.GoToAsync(route);
         }
 
         private async Task ExecuteCancel()
         {
-            // revert depending on mode
+            // Vuelvo el color segun el modo
             if (ForAdmin)
                 ThemeService.AdminMenuColor = _originalAdminColor;
             else
@@ -80,3 +80,4 @@ namespace AppFinanzas.Mvvm.ViewModels
         }
     }
 }
+

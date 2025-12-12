@@ -1,16 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <!-- The Mac App Store requires you specify if the app uses encryption. -->
-    <!-- Please consult https://developer.apple.com/documentation/bundleresources/information_property_list/itsappusesnonexemptencryption -->
-    <!-- <key>ITSAppUsesNonExemptEncryption</key> -->
-    <!-- Please indicate <true/> or <false/> here. -->
+    <!-- La Mac App Store pide que indiques si la app usa cifrado. -->
+    <!-- Mas info: https://developer.apple.com/documentation/bundleresources/information_property_list/itsappusesnonexemptencryption -->
+    <!-- Ejemplo: <key>ITSAppUsesNonExemptEncryption</key> -->
+    <!-- Pone <true/> o <false/> aca. -->
 
-    <!-- Specify the category for your app here. -->
-    <!-- Please consult https://developer.apple.com/documentation/bundleresources/information_property_list/lsapplicationcategorytype -->
-    <!-- <key>LSApplicationCategoryType</key> -->
-    <!-- <string>public.app-category.YOUR-CATEGORY-HERE</string> -->
+    <!-- Aca va la categoria de la app. -->
+    <!-- Mas info: https://developer.apple.com/documentation/bundleresources/information_property_list/lsapplicationcategorytype -->
+    <!-- Ejemplo: <key>LSApplicationCategoryType</key> -->
+    <!-- Ejemplo: <string>public.app-category.YOUR-CATEGORY-HERE</string> -->
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>2</integer>
@@ -36,3 +36,5 @@
 	<string>Assets.xcassets/appicon.appiconset</string>
 </dict>
 </plist>
+
+

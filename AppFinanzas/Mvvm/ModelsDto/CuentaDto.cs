@@ -14,6 +14,8 @@ namespace AppFinanzas.Mvvm.ModelsDto
 
         [JsonPropertyName("saldoInicial")]
         public decimal Saldo { get; set; }
+
+        [JsonPropertyName("saldoActual")]
         public decimal SaldoActual { get; set; }
 
         [JsonPropertyName("banco")]

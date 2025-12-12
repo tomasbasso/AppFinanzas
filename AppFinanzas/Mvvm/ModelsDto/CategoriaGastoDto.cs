@@ -13,7 +13,8 @@ namespace AppFinanzas.Mvvm.ModelsDto
         public string Nombre { get; set; }
         public int? UsuarioId { get; set; }
 
-        //public UsuarioDto { get; set; }
+        // public UsuarioDto Usuario { get; set; } 
         
     }
 }
+
